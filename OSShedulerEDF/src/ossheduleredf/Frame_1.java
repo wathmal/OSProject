@@ -119,14 +119,25 @@ public class Frame_1 extends javax.swing.JFrame {
             }
             */
             
+            // sea glass L&F
             UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Frame_1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Frame_1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Frame_1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (Exception ex) {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    try {
+                        javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    } catch (ClassNotFoundException ex1) {
+                        Logger.getLogger(Frame_1.class.getName()).log(Level.SEVERE, null, ex1);
+                    } catch (InstantiationException ex1) {
+                        Logger.getLogger(Frame_1.class.getName()).log(Level.SEVERE, null, ex1);
+                    } catch (IllegalAccessException ex1) {
+                        Logger.getLogger(Frame_1.class.getName()).log(Level.SEVERE, null, ex1);
+                    } catch (UnsupportedLookAndFeelException ex1) {
+                        Logger.getLogger(Frame_1.class.getName()).log(Level.SEVERE, null, ex1);
+                    }
+                    break;
+                }
+            }
             java.util.logging.Logger.getLogger(Frame_1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
