@@ -23,6 +23,12 @@
  */
 package ossheduleredf;
 
+import com.seaglasslookandfeel.SeaGlassLookAndFeel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 /**
  *
  * @author HP
@@ -34,6 +40,7 @@ public class Frame_1 extends javax.swing.JFrame {
      */
     public Frame_1() {
         initComponents();
+        
     }
 
     /**
@@ -68,7 +75,7 @@ public class Frame_1 extends javax.swing.JFrame {
         jPanel1.add(jLabel1);
         jLabel1.setBounds(90, 20, 420, 40);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\HP\\Pictures\\Aureole WallpDWFFEFaper.jpg")); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ossheduleredf/Aureole Wallpaper.jpg"))); // NOI18N
         jLabel2.setText("jLabel2");
         jPanel1.add(jLabel2);
         jLabel2.setBounds(0, 0, 800, 520);
@@ -103,12 +110,16 @@ public class Frame_1 extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
+            /*
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
+            */
+            
+            UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(Frame_1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
