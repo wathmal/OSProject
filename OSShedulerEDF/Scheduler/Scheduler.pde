@@ -13,31 +13,7 @@ synchronized int getUniqueJobID()
   {
     return Job_next_id++;
   }
-class Job
-{
-  public controlP5.Numberbox period;
-  public controlP5.Numberbox serviceTime;
-  
-  public int posx;
-  public int posy;
-  public int myid;
-  
-  public int nextDeadline; //for repeating jobs
-  public int proccessedTime;
-  public int arrivalTime;
-  public boolean state;
-  public int absoluteDeadline;
-  public float completionPercentage; // = processedTime/serviceTime * 100%
-  
-  public int getPeriod()
-  {
-    return (int)this.period.getValue();
-  }
-  public int getServiceTime()
-  {
-    return (int)this.period.getValue();
-  }
-}
+
 
 
 class JobPool {
@@ -144,8 +120,7 @@ void setup()
 void wait(int mil)
 {
   int curtime = millis();
-  while(millis() - curtime >= mil)
-  ;
+  while(millis() - curtime >= mil);
 }
   
 void draw() {

@@ -1,3 +1,5 @@
+
+
 class Job
 {
   public controlP5.Numberbox period;
@@ -20,7 +22,7 @@ class Job
     posx = x;
     posy = y;
     nextDeadline = -1;
-    procesorTime = 0;
+    proccessedTime = 0;
     myid = getUniqueJobID();
     /*
       ADDITIONAL UI ELEMENTS TODO
