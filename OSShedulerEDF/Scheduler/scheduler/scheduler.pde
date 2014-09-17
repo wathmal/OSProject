@@ -8,7 +8,7 @@ class Scheduler{
   }
   
   void initJobArrray(){
-    jobArray= pool.getJobArray();
+    jobArray= pool.jobs;
   }
   
   public void runScheduler(){
@@ -24,7 +24,7 @@ class Scheduler{
       }
     }
     
-    pool.getJobArray()[shortestDeadline].state= true;
+    pool.jobs[shortestDeadline].state= true;
     
   }
   
