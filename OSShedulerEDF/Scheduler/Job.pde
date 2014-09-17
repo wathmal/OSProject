@@ -52,7 +52,9 @@ class Job
                        .setDirection(Controller.HORIZONTAL)
                        .setValue(0)
                        .setCaptionLabel("Job #" + myid + " service");
-  }ublic int getPeriod()
+  }
+  
+  public int getPeriod()
   {
     return (int)this.period.getValue();
   }
