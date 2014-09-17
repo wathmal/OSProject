@@ -15,7 +15,11 @@ class Scheduler{
     initJobArray();
     int arrayLength= jobArray.length;
     
+    int shortestDeadline= jobArray[0].absoluteDeadline;
     
+    for(int i=0; i< arrayLength; i++){
+      
+    }
     
     
   }
