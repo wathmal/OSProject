@@ -20,11 +20,12 @@ synchronized int getUniqueJobID()
 }
 
 controlP5.Numberbox redb,greenb,blueb;
-JobPool pool = new JobPool();
+JobPool pool;
 void setup()
 {
   
   size(800,600);
+  pool = new JobPool();
   noStroke();
   cp5 = new ControlP5(this);
   

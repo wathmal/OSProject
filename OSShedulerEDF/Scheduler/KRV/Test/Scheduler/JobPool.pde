@@ -1,7 +1,6 @@
 Canvas cc;
 
 public int counter = 0; 
-int jobAvailability[] = new int[10];
 Job jobs[]; //Array in the job pool
 
 
@@ -22,15 +21,13 @@ class JobPool extends Canvas {
   // using the processes which are created in the 'jobs' array
   public void createInterface(){  
     
-    for(int i = 0 ; i  < jobCount; i ++){
+    for(int i = 0 ; i  < jobCount-1; i ++){
       
       if(jobs[i]!=null){
-        //System.out.println(jobs[i].myid);
-          jobAvailability[i] = 1;
           jobs[i].move(20,60+(i*60));
           counter++;
       }else{
-          jobAvailability[i] = 0;
+        
       }
     }
   }
@@ -44,14 +41,12 @@ class JobPool extends Canvas {
             
             if(i+1==jobCount){
                jobs[i] = null;
-               jobAvailability[i] = 0;         
+            //   jobAvailability[i] = 0;         
             }else{
               System.out.println("j");
               for(int j = i; j < jobCount-1;j++){                
                 jobs[j] = jobs[j+1];
-                jobAvailability[j] = jobAvailability[j+1];
-                System.out.println(jobAvailability[j]);
-              }
+             }
               
             }
             background(0);
