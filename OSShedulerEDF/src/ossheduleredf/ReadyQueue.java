@@ -30,14 +30,26 @@ import java.util.Queue;
 public class ReadyQueue implements Queue{
     
     Job jobs[];
+    public int maximumJobs = 10;
+    public int jobCount;
+    public int tail;
+    public int head;
+    
     
     public ReadyQueue(){
-        jobs = new Job[10];
+        this.jobs = new Job[10];
+        this.head = 0;
+        this.tail = 0;
+        this.jobCount = 0;
     }
     
     @Override
     public boolean add(Object e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if( !isEmpty()){
+            jobs[++tail] = (Job)e;
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -47,7 +59,14 @@ public class ReadyQueue implements Queue{
 
     @Override
     public Object remove() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Job temp;
+        if( !isEmpty()){
+            temp = jobs[head];// = (Job)e;
+            head--;
+            return temp;
+        }else{
+            return null;
+        }
     }
 
     @Override
@@ -72,7 +91,7 @@ public class ReadyQueue implements Queue{
 
     @Override
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.tail > this.head; 
     }
 
     @Override
