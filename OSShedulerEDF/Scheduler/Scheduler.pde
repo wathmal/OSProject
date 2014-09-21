@@ -22,16 +22,57 @@ controlP5.Numberbox redb,greenb,blueb;
 JobPool pool = new JobPool();
 void setup()
 {
-  size(800,480);
+  
+  size(800,600);
   noStroke();
   cp5 = new ControlP5(this);
+  
+  cc = new JobPool();
+  cc.pre();
+  cp5.addCanvas(cc);
+  
   background(0);
+  
   for(int i = 0;i < 5;i++)
     pool.push(new Job(10 , 20 + (60*i)));
-  cp5.addButton("add_Job")
-     .setSize(220, 50)
-     .setPosition(10, 20 + 300)
-     .setCaptionLabel("[+] Add Job");
+  
+    // "Add Job Button"
+    cp5.addButton("add_Job")
+       .setSize(220, 50)
+       .setPosition(10, 540)
+       .setCaptionLabel("[+] Add Job");
+
+    Job jobNNN = new Job(0,0);
+    Job jobMMM = new Job(0,0);
+    pool.push(jobNNN);
+    pool.push(jobMMM);
+    pool.removeFromInterface(jobNNN);
+   //pool.createInterface();
+    // ##############################################################################
+    // #########################  TESTING  ##########################################
+    /*
+    JobPool pool = new JobPool();
+    Job job1 = new Job(100,100);
+    Job job2 = new Job(100,100);
+    Job job3 = new Job(100,100);
+    Job job4 = new Job(100,100);
+    Job job5 = new Job(100,100);
+  
+    pool.push(job1);
+    pool.push(job2);
+    pool.push(job3);
+    pool.push(job4);
+    pool.push(job5);
+  
+  
+    //pool.removeFromInterface(job3);
+    //pool.createInterface();
+    pool.removeFromInterface(job4);
+    Job job6 = new Job(100,100);
+    pool.push(job6);
+    */ 
+    // #################################################################################
+    // ################################################################################# 
   
 }
 void wait(int mil)
@@ -40,9 +81,13 @@ void wait(int mil)
   while(millis() - curtime >= mil)
   ;
 }
-  
-void draw() {
+int cnt = 0;
 
+void draw() {
+  cnt++;
+  for(int i = 0;i < pool.jobCount;i++)
+    if(jobs[i] != null)
+      jobs[i].percentage.setValue(cnt % 101);
 }
 
 
