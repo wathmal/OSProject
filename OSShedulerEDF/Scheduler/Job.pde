@@ -1,4 +1,3 @@
-
 /*
 
 Job Class
@@ -23,7 +22,6 @@ getServiceTime() - return the service time of the Job
 */
 
 final int PERCENTAGE_RADIUS = 20;
-
 class Job
 {
   public controlP5.Numberbox period;
@@ -81,6 +79,7 @@ class Job
                  .setDirection(Controller.HORIZONTAL)
                  .setValue(MIN_PERIOD)
                  .setCaptionLabel("Period");
+                 
     this.serviceTime = cp5.addNumberbox(myid + "s")
                        .setPosition(period.getPosition().x + 5 + JOB_WIDTH , posy + 13)
                        .setRange(0,MAX_SERVICE_TIME)
@@ -88,6 +87,7 @@ class Job
                        .setDirection(Controller.HORIZONTAL)
                        .setValue(0)
                        .setCaptionLabel("Service Time");
+                       
     this.percentage = cp5.addKnob(myid + "c")
                          .setRange(0,100)
                          .setValue(processedTime)
@@ -96,6 +96,7 @@ class Job
                          .setShowAngleRange(false)
                          .setLock(false)
                          .setCaptionLabel("");
+                         
     this.dispatchButton = cp5.addButton(myid + "d")
                              .setPosition(serviceTime.getPosition().x + JOB_WIDTH + 2, posy + 13)
                              .setSize(JOB_HEIGHT, JOB_HEIGHT)
@@ -105,14 +106,40 @@ class Job
                          .setSize(JOB_HEIGHT, JOB_HEIGHT)
                          .setCaptionLabel("  x");
   }
-
+  
+  public void move(int x, int y)
+  {
+    posx = x;
+    posy = y;
+    this.period.setPosition(posx + (PERCENTAGE_RADIUS + 25), posy + 13 );
+    this.serviceTime.setPosition(period.getPosition().x + 5 + JOB_WIDTH , posy + 13);
+    this.percentage.setPosition(posx, posy + 12);
+    this.dispatchButton.setPosition(serviceTime.getPosition().x + JOB_WIDTH + 2, posy + 13);
+    this.killButton.setPosition(dispatchButton.getPosition().x + JOB_HEIGHT + 2, posy + 13);
+    this.jobIdLabel.setPosition(posx, posy);
+  }
+  
+  public void removeJob(){
+    this.period.remove();
+    this.serviceTime.remove();
+    this.percentage.remove();
+    this.dispatchButton.remove();
+    this.killButton.remove();
+    this.jobIdLabel.remove();
+    
+  }
+  
   public int getPeriod()
   {
     return (int)this.period.getValue();
   }
+  
+  
   public int getServiceTime()
   {
     return (int)this.period.getValue();
   }
+  
+  
 }
 
