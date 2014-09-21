@@ -1,7 +1,7 @@
 /* 
  * The MIT License
  *
- * Copyright 2014 krv.
+ * Copyright 2014 Aureole.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,9 @@
  */
 package ossheduleredf;
 
-/**
- *
- * @author krv
- */
+
 public class OSShedulerEDF {
 
-    /**
-     * @param args the command line arguments
-     */
-  
+    
     
 }
