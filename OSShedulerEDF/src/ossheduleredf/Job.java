@@ -23,10 +23,7 @@
  */
 package ossheduleredf;
 
-/**
- *
- * @author krv
- */
+
 public class Job {
     public int serviceTime;
     public int period;
