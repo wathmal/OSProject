@@ -28,14 +28,28 @@ public class OSShedulerEDF implements Runnable{
 
     public Queue readyQueue;
     public Queue blockedQueue;
-    public Queue running;
+    public Queue runningQueue;
     
     public OSShedulerEDF(){
         readyQueue = new Queue();
         blockedQueue = new Queue();
-        running = new Queue();
+        runningQueue = new Queue();
     }
 
+    public boolean runningToBlocked(int id){
+        Job temp = runningQueue.jobs.get(id);
+        runningQueue.jobs.remove(id);
+        blockedQueue.jobs.add(temp);
+        return true;
+    }
+    
+    public boolean blockedToRunning(int id){
+        Job temp = blockedQueue.jobs.get(id);
+        blockedQueue.jobs.remove(id);
+        runningQueue.jobs.add(temp);
+        return true;
+    }
+    
     @Override
     public void run() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
