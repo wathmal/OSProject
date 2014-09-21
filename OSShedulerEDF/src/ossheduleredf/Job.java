@@ -31,9 +31,9 @@ public class Job {
     public int nextDeadline; //for repeating jobs
     public int processedTime;
     public int arrivalTime;
-    public boolean suspended;   //running or not
+    public boolean runnable;   //running or not
     public boolean running; 
-    public boolean ioBlocked;
+    public boolean blocked;
     public int absoluteDeadline;
     public float completionPercentage;
         
@@ -83,12 +83,12 @@ public class Job {
         this.arrivalTime = arrivalTime;
     }
 
-    public boolean isSuspended() {
-        return suspended;
+    public boolean isRunnable() {
+        return runnable;
     }
 
-    public void setSuspended(boolean suspended) {
-        this.suspended = suspended;
+    public void setRunnable(boolean runnable) {
+        this.runnable = runnable;
     }
 
     public boolean isRunning() {
@@ -99,12 +99,12 @@ public class Job {
         this.running = running;
     }
 
-    public boolean isIoBlocked() {
-        return ioBlocked;
+    public boolean isBlocked() {
+        return blocked;
     }
 
-    public void setIoBlocked(boolean ioBlocked) {
-        this.ioBlocked = ioBlocked;
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
     }
 
     public float getCompletionPercentage() {
@@ -115,6 +115,9 @@ public class Job {
         this.completionPercentage = completionPercentage;
     }
     
+    public void suspend(){
+        
+    }
     
     
 }
