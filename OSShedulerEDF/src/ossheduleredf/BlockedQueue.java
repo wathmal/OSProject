@@ -32,7 +32,8 @@ import java.util.Iterator;
  */
 public class BlockedQueue {
     public ArrayList<Job> jobs;
-
+    public int earliestDeadlineJobid;
+    
     public BlockedQueue() {
         this.jobs = new ArrayList<>();
     }
@@ -71,5 +72,15 @@ public class BlockedQueue {
 
     public void clear() {
         jobs.clear();
+    }
+    
+    public void updateED(){
+        int ED = Integer.MAX_VALUE;
+        for (Job job : jobs) {
+            if(ED > job.getNextDeadline() ){
+                ED = job.getNextDeadline();
+                earliestDeadlineJobid = job.getJobId();
+            }
+        }
     }
 }
