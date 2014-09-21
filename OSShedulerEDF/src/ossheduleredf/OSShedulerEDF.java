@@ -26,8 +26,8 @@ package ossheduleredf;
 
 public class OSShedulerEDF {
 
-    ReadyQueue readyQueue;
-    BlockedQueue blockedQueue;
+    public ReadyQueue readyQueue;
+    public BlockedQueue blockedQueue;
     
     public OSShedulerEDF(){
         readyQueue = new ReadyQueue();
@@ -35,5 +35,5 @@ public class OSShedulerEDF {
     }
     
     
-    
+        
 }
