@@ -23,10 +23,53 @@
  */
 package ossheduleredf;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  *
  * @author krv
  */
 public class BlockedQueue {
-    
+    public ArrayList<Job> jobs;
+
+    public BlockedQueue() {
+        this.jobs = new ArrayList<>();
+    }
+
+    public boolean add(Job e) {
+        return jobs.add(e);
+    }
+
+    public Object poll() {
+        throw new UnsupportedOperationException("Not supported yet.");    // To change body of generated methods, choose Tools | Templates.
+    }
+
+    public int size() {
+        return jobs.size();
+    }
+
+    public boolean isEmpty() {
+        return jobs.isEmpty();
+    }
+
+    public boolean contains(Job o) {
+        return jobs.contains(o);
+    }
+
+    public Iterator iterator() {
+        return jobs.iterator();
+    }
+
+    public Object[] toArray() {
+        return jobs.toArray();
+    }
+
+    public boolean remove(Job o) {
+        return jobs.remove(o);
+    }
+
+    public void clear() {
+        jobs.clear();
+    }
 }
