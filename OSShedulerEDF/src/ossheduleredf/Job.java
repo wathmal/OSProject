@@ -28,5 +28,19 @@ package ossheduleredf;
  * @author krv
  */
 public class Job {
+    public int serviceTime;
+    public int period;
+    public int jobId;
+    public int nextDeadline; //for repeating jobs
+    public int processedTime;
+    public int arrivalTime;
+    public boolean state;   //running or not
+    public boolean ioBlocked;
+    public int absoluteDeadline;
+    public float completionPercentage;
+        
+    public Job(){
+        
+    }
     
 }
