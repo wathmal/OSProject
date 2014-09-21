@@ -34,13 +34,90 @@ public class Job {
     public int nextDeadline; //for repeating jobs
     public int processedTime;
     public int arrivalTime;
-    public boolean state;   //running or not
+    public boolean suspended;   //running or not
+    public boolean running; 
     public boolean ioBlocked;
     public int absoluteDeadline;
     public float completionPercentage;
         
-    public Job(){
+    public Job(){} //no argument constructor
+    
+    public Job(int period, int serviceTime, int jobId ){
         
     }
+
+    public int getServiceTime() {
+        return serviceTime;
+    }
+
+    public void setServiceTime(int serviceTime) {
+        this.serviceTime = serviceTime;
+    }
+
+    public int getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(int jobId) {
+        this.jobId = jobId;
+    }
+
+    public int getNextDeadline() {
+        return nextDeadline;
+    }
+
+    public void setNextDeadline(int nextDeadline) {
+        this.nextDeadline = nextDeadline;
+    }
+
+    public int getProcessedTime() {
+        return processedTime;
+    }
+
+    public void setProcessedTime(int processedTime) {
+        this.processedTime = processedTime;
+    }
+
+    public int getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(int arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public boolean isSuspended() {
+        return suspended;
+    }
+
+    public void setSuspended(boolean suspended) {
+        this.suspended = suspended;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    public boolean isIoBlocked() {
+        return ioBlocked;
+    }
+
+    public void setIoBlocked(boolean ioBlocked) {
+        this.ioBlocked = ioBlocked;
+    }
+
+    public float getCompletionPercentage() {
+        return completionPercentage;
+    }
+
+    public void setCompletionPercentage(float completionPercentage) {
+        this.completionPercentage = completionPercentage;
+    }
+    
+    
     
 }
