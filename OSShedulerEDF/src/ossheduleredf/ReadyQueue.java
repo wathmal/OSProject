@@ -34,13 +34,18 @@ import java.util.Iterator;
 public class ReadyQueue {
     public ArrayList<Job> jobs;
     public int earliestDeadlineJobid;
-
+    public Job EDFJob;
+    
     public ReadyQueue() {
         this.jobs = new ArrayList<>();
+        earliestDeadlineJobid = 0;
+        EDFJob = null;
     }
 
     public boolean add(Job e) {
-        return jobs.add(e);
+        boolean temp = jobs.add(e);
+        updateED();
+        return temp;
     }
 
     public Object poll() {
@@ -68,7 +73,17 @@ public class ReadyQueue {
     }
 
     public boolean remove(Job o) {
-        return jobs.remove(o);
+        boolean temp = jobs.remove(o);
+        updateED();
+        return temp;
+    }
+    
+    public Job removeEDFjob() {
+        int arrayIndex = jobs.indexOf(EDFJob);
+        Job o = jobs.get(arrayIndex);
+        jobs.remove(o);
+        updateED();
+        return o;
     }
 
     public void clear() {
@@ -81,6 +96,7 @@ public class ReadyQueue {
             if(ED > job.getNextDeadline() ){
                 ED = job.getNextDeadline();
                 earliestDeadlineJobid = job.getJobId();
+                EDFJob = job;
             }
         }
     }
