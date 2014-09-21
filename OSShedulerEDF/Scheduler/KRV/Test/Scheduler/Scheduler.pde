@@ -35,7 +35,7 @@ void setup()
   
   background(0);
   
-  for(int i = 0;i < 5;i++)
+  for(int i = 0;i < pool.maxJobCount;i++)
     pool.push(new Job(10 , 20 + (60*i)));
   
     // "Add Job Button"
@@ -44,11 +44,6 @@ void setup()
        .setPosition(10, 540)
        .setCaptionLabel("[+] Add Job");
 
-    Job jobNNN = new Job(0,0);
-    Job jobMMM = new Job(0,0);
-    pool.push(jobNNN);
-    pool.push(jobMMM);
-    pool.remove(jobNNN.myid);
    //pool.createInterface();
     // ##############################################################################
     // #########################  TESTING  ##########################################
@@ -87,18 +82,20 @@ int cnt = 0;
 
 void draw() {
   cnt++;
-  for(int i = 0;i < pool.jobCount;i++)
-    if(jobs[i] != null)
-      jobs[i].percentage.setValue(cnt % 101);
+  //for(int i = 0;i < pool.maxJobCount;i++)
+    //if(jobs[i] != null)
+      //jobs[i].percentage.setValue(cnt % 101);
 }
 
 public void controlEvent(ControlEvent theEvent) {
   String nm = theEvent.getController().getName();
+  print(theEvent.getController().getName() + ": ");
   Pattern p = Pattern.compile("(\\d+)([dk])");
   Matcher m;
   m = p.matcher(nm);
   if(m.find())
   {
+    println("Button " + m.group(2) + " of " + m.group(1) + " job was pressed.");
     println("Button " + m.group(2) + " of " + m.group(1) + " job was pressed.");
     pool.remove(Integer.parseInt(m.group(1)));
     
