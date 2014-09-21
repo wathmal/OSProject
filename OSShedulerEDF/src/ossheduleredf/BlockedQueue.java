@@ -36,10 +36,13 @@ public class BlockedQueue {
     
     public BlockedQueue() {
         this.jobs = new ArrayList<>();
+        earliestDeadlineJobid = 0;
     }
 
     public boolean add(Job e) {
-        return jobs.add(e);
+        boolean temp = jobs.add(e);
+        updateED();
+        return temp;
     }
 
     public Object poll() {
@@ -67,11 +70,14 @@ public class BlockedQueue {
     }
 
     public boolean remove(Job o) {
-        return jobs.remove(o);
+        boolean temp = jobs.remove(o);
+        updateED();
+        return temp;
     }
 
     public void clear() {
         jobs.clear();
+        earliestDeadlineJobid = 0;
     }
     
     public void updateED(){
