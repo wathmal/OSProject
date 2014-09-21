@@ -26,12 +26,13 @@ package ossheduleredf;
 
 public class OSShedulerEDF implements Runnable{
 
-    public Queue readyQueue;
+    public Queue runnableQueue;
     public Queue blockedQueue;
     public Queue runningQueue;
     
     public OSShedulerEDF(){
-        readyQueue = new Queue();
+        runnableQueue = new Queue(); //add new items to this queue and upon user
+                                     //request move to runningQueue
         blockedQueue = new Queue();
         runningQueue = new Queue();
     }
@@ -50,7 +51,7 @@ public class OSShedulerEDF implements Runnable{
         return true;
     }
     
-    public boolean swapJobRunningBlocked(Job o){
+    public boolean swapBetweenRunninBlocked(Job o){
        if( o.isRunning()){
         runningToBlocked(o.getJobId());
        }else if(o.isIoBlocked()){
