@@ -54,7 +54,7 @@ public class OSShedulerEDF implements Runnable{
     public boolean swapBetweenRunninBlocked(Job o){
        if( o.isRunning()){
         runningToBlocked(o.getJobId());
-       }else if(o.isIoBlocked()){
+       }else if(o.isBlocked()){
          blockedToRunning(o.getJobId());
        }
         return true;
