@@ -24,7 +24,7 @@
 package ossheduleredf;
 
 
-public class OSShedulerEDF {
+public class OSShedulerEDF implements Runnable{
 
     public Queue readyQueue;
     public Queue blockedQueue;
@@ -35,6 +35,13 @@ public class OSShedulerEDF {
         blockedQueue = new Queue();
         running = new Queue();
     }
+
+    @Override
+    public void run() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
     
     
         
