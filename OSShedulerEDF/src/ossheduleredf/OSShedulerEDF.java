@@ -28,10 +28,12 @@ public class OSShedulerEDF {
 
     public Queue readyQueue;
     public Queue blockedQueue;
+    public Queue running;
     
     public OSShedulerEDF(){
         readyQueue = new Queue();
         blockedQueue = new Queue();
+        running = new Queue();
     }
     
     
