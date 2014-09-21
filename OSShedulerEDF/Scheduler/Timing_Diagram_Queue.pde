@@ -31,8 +31,8 @@ public Timing_Diagram_Queue(){
     posx = (int)globalTime;
     p.fill(255,229,77);
     if((queued_job.state || true)  ){
-      int widthy =  queued_job.proccessedTime;      
-      p.rect(JOB_WIDTH*2+20-queued_job.proccessedTime+posx-queued_job.arrivalTime, posy, widthy, JOB_HEIGHT);
+      int widthy =  queued_job.processedTime;      
+      p.rect(JOB_WIDTH*2+20-queued_job.processedTime+posx-queued_job.arrivalTime, posy, widthy, JOB_HEIGHT);
     }
   }//end draw method 
 } 
