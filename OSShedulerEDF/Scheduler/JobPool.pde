@@ -15,7 +15,7 @@ class JobPool extends Canvas {
 
   public void draw(PApplet p) {
     p.fill(#171717);
-    p.rect(5, 5, 250, 545, 5);
+    //p.rect(5, 200, 250, 545, 5);
   } 
   
   // This will create the sub-interface(Left side of the mai interface)
@@ -36,9 +36,9 @@ class JobPool extends Canvas {
   }
   
   // This will remove the given job from the left sub-interface 
-  public void removeFromInterface(Job job){
+  public void remove(int job_id){
     for(int i = 0 ; i<jobCount ; i++){
-        if(job.myid == jobs[i].myid ){
+        if(jobs[i] != null && job_id == jobs[i].myid ){
             jobs[i].removeJob();
             
             
@@ -54,12 +54,12 @@ class JobPool extends Canvas {
               }
               
             }
+            background(0);
             createInterface();
             break;        
         }
         
-    }
-    
+    }  
   }
 
   
@@ -70,7 +70,7 @@ class JobPool extends Canvas {
   // Constructor
   JobPool()
   {
-    jobCount = 10; // Number of jobs = 10
+    jobCount = height/JOB_WIDGET_HEIGHT - 1; // Number of jobs = 10
     jobs = new Job[jobCount]; // Creating the job pool array of 10
   }
   
@@ -110,17 +110,7 @@ class JobPool extends Canvas {
     return mostUrgentJob;
   }
   
-  public void remove(int id)
-  {
-    int i = -1;
-    while(++i < jobCount)
-    {
-      if(jobs[i] != null && jobs[i].myid == id) {
-        jobs[i] = null;
-        return;
-      }
-    }
-  }
+  
   public void printPool()
   {
     int i = -1;

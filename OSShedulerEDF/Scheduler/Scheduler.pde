@@ -1,5 +1,6 @@
 import controlP5.*;
-
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 final int MIN_PERIOD = 10; //minimum job cycle duration
 final int MAX_SERVICE_TIME = 200; //maximum time for a job on processor
 final int JOB_WIDTH = 60;
@@ -46,7 +47,7 @@ void setup()
     Job jobMMM = new Job(0,0);
     pool.push(jobNNN);
     pool.push(jobMMM);
-    pool.removeFromInterface(jobNNN);
+    pool.remove(jobNNN.myid);
    //pool.createInterface();
     // ##############################################################################
     // #########################  TESTING  ##########################################
@@ -90,4 +91,16 @@ void draw() {
       jobs[i].percentage.setValue(cnt % 101);
 }
 
+public void controlEvent(ControlEvent theEvent) {
+  String nm = theEvent.getController().getName();
+  Pattern p = Pattern.compile("(\\d+)([dk])");
+  Matcher m;
+  m = p.matcher(nm);
+  if(m.find())
+  {
+    println("Button " + m.group(2) + " of " + m.group(1) + " job was pressed.");
+    pool.remove(Integer.parseInt(m.group(1)));
+    
+  }
+}
 
