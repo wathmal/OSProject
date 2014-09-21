@@ -35,7 +35,7 @@ public class ReadyQueue {
     public ArrayList<Job> jobs;
 
     public ReadyQueue() {
-        this.jobs = new ArrayList<Job>();
+        this.jobs = new ArrayList<>();
     }
 
     public boolean add(Job e) {
