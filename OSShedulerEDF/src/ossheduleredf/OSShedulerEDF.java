@@ -50,6 +50,15 @@ public class OSShedulerEDF implements Runnable{
         return true;
     }
     
+    public boolean swapJobRunningBlocked(Job o){
+       if( o.isRunning()){
+        runningToBlocked(o.getJobId());
+       }else if(o.isIoBlocked()){
+         blockedToRunning(o.getJobId());
+       }
+        return true;
+    }
+    
     @Override
     public void run() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
