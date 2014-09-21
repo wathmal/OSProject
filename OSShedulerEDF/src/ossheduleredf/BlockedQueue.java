@@ -34,7 +34,7 @@ public class BlockedQueue {
     public ArrayList<Job> jobs;
 
     public BlockedQueue() {
-        this.jobs = new ArrayList<Job>();
+        this.jobs = new ArrayList<>();
     }
 
     public boolean add(Job e) {
