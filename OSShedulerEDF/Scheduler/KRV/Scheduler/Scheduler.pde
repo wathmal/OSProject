@@ -50,6 +50,12 @@ void wait(int mil)
 }
   
 void draw() {
+  /*for( int i = 0 ; i < 500 ; i += 2 ){
+    if( i%5==0 ){
+     for( int j = 0 ; j < 50 ; j += 2 )
+      
+    } 
+  }*/
   jobs[0].processedTime++;
   globalTime++;
   background(0);
