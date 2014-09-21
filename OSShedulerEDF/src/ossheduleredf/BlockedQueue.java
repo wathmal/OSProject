@@ -33,10 +33,12 @@ import java.util.Iterator;
 public class BlockedQueue {
     public ArrayList<Job> jobs;
     public int earliestDeadlineJobid;
+    public Job EDFJob;
     
     public BlockedQueue() {
         this.jobs = new ArrayList<>();
         earliestDeadlineJobid = 0;
+        EDFJob = null;
     }
 
     public boolean add(Job e) {
@@ -74,10 +76,19 @@ public class BlockedQueue {
         updateED();
         return temp;
     }
+    
+    public Job removeEDFjob() {
+        int arrayIndex = jobs.indexOf(EDFJob);
+        Job o = jobs.get(arrayIndex);
+        jobs.remove(o);
+        updateED();
+        return o;
+    }
 
     public void clear() {
         jobs.clear();
         earliestDeadlineJobid = 0;
+        EDFJob = null;
     }
     
     public void updateED(){
@@ -86,6 +97,7 @@ public class BlockedQueue {
             if(ED > job.getNextDeadline() ){
                 ED = job.getNextDeadline();
                 earliestDeadlineJobid = job.getJobId();
+                EDFJob = job;
             }
         }
     }
