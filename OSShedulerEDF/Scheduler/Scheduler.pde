@@ -10,11 +10,9 @@ long globalTime;
 
 int Job_next_id;
 synchronized int getUniqueJobID()
-  {
+{
     return Job_next_id++;
-  }
-
-
+}
 
 class JobPool {
   public Job jobs[];
@@ -112,10 +110,18 @@ void setup()
   .setValue(20);*/
   //Job myjob = new Job(100,240);
   
+  c2 = new TimeLIne();
+  c2.pre(); // use cc.post(); to draw on top of existing controllers.
+  cp5.addCanvas(c2); // add the canvas to cp5
+  
+  
+  
   for(int i = 0;i < 10;i++)
     pool.push(new Job(10 , 10 + (36*i)));
   background(0);
-  
+  c3 = new Timing_Diagram_Queue(pool.jobs[0]);
+  c3.pre(); // use cc.post(); to draw on top of existing controllers.
+  cp5.addCanvas(c3); // add the canvas to cp5
 }
 void wait(int mil)
 {
@@ -124,7 +130,9 @@ void wait(int mil)
 }
   
 void draw() {
-
+  pool.jobs[0].proccessedTime++;
+  globalTime++;
+  background(0);
 }
 
 
