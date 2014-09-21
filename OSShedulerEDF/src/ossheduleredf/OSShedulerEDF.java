@@ -26,12 +26,12 @@ package ossheduleredf;
 
 public class OSShedulerEDF {
 
-    public ReadyQueue readyQueue;
-    public BlockedQueue blockedQueue;
+    public Queue readyQueue;
+    public Queue blockedQueue;
     
     public OSShedulerEDF(){
-        readyQueue = new ReadyQueue();
-        blockedQueue = new BlockedQueue();
+        readyQueue = new Queue();
+        blockedQueue = new Queue();
     }
     
     
