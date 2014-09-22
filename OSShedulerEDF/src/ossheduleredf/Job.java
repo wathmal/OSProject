@@ -28,18 +28,19 @@ public class Job {
     public int serviceTime; // defined at the job creation // Fixed
     public int period; // defined at the job creation // Fixed
     public int jobId; // defined at the job creation // Fixed
-    public int nextDeadline; // for repeating jobs // Keep_Changing
+    public int nextDeadline; // for repeating jobs // Keep_Changing // This is a time period(not a real time )
     public int processedTime; // processedTime <= serviceTime
-    public int arrivalTime;// at the job creation
-    public boolean runnable;   //running or not
-    public boolean running;
-    public boolean blocked;
-    public int absoluteDeadline;
-    public float completionPercentage; // processed time  /  service time
-    public CPU cpu1_Job;
+    public int arrivalTime; // defined at the job creation // used to define absoluteDeadline
+    public boolean runnable; // states whether the job is in the runnable state (newly added jobs and completed jobs)
+    public boolean running; // states whether the job is in the running state (running job and preempted jobs)
+    public boolean blocked; // ...............................
+    public int absoluteDeadline; // Deadline relative to the real time // absoluteDeadline = arrivalTime + period
+    public float completionPercentage; // (processedTime/serviceTime)*100%
+    public CPU cpu1_Job; // CPU instance
 
+    //no argument constructor
     public Job() {
-    } //no argument constructor
+    } 
 
     public Job(int period, int serviceTime, int jobId, CPU cp) {
         this.period = period;
@@ -49,6 +50,16 @@ public class Job {
         this.processedTime = 0;
     }
 
+    // This will update the absoluteDeadline
+    public void updateAbsoluteDeadline(){
+        this.setAbsoluteDeadline(this.getArrivalTime()+this.getPeriod());
+    }
+    
+    // This will increase the processedTime by one
+    public void process(){
+        this.setProcessedTime(this.getProcessedTime()+1);
+    }
+    
     // This will update the nextDeadline 
     public void updateNextDeadline() {
         if (isRunnable() == true) { // If job is in Runnable Queue --> Completed jobs will be considered 
