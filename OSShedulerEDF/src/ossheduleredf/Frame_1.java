@@ -34,10 +34,11 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author HP
  */
 public class Frame_1 extends javax.swing.JFrame {
-    public OSShedulerEDF scheduler;
+    public static CPU cpu= new CPU();
+    public static OSShedulerEDF scheduler = new OSShedulerEDF(cpu);
     public int noOfJobs= 5;
     public Job jobArray[]= new Job[noOfJobs];
-    public static CPU cpu= new CPU();
+    
     /**
      * Creates new form Frame_1
      */
@@ -880,8 +881,7 @@ public class Frame_1 extends javax.swing.JFrame {
         serviceTimeArray[3]= Integer.parseInt(!(jTextFieldS_job4.getText().equals(""))?jTextFieldS_job4.getText():"0");
         serviceTimeArray[4]= Integer.parseInt(!(jTextFieldS_job5.getText().equals(""))?jTextFieldS_job5.getText():"0");
         
-        // sechduler object first creates here :)
-        scheduler= new OSShedulerEDF();
+        
         
         for(int i=0; i<noOfJobs; i++){
             jobArray[i]= new Job(deadlineArray[i], serviceTimeArray[i], i,cpu);
