@@ -28,7 +28,23 @@ import java.util.logging.Logger;
 
 public class CPU implements Runnable{
     
-    private int time = 0;
+    private int time;
+    private float cpuUtilization;
+
+    public CPU() {
+        this.time = 0;
+        this.cpuUtilization = 0;
+    }
+
+    public float getCpuUtilization() {
+        return cpuUtilization;
+    }
+
+    public void setCpuUtilization(float cpuUtilization) {
+        this.cpuUtilization = cpuUtilization;
+    }
+    
+    
     
     public boolean resetTime(){
         time = 0;
