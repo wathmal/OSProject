@@ -26,8 +26,8 @@ package ossheduleredf;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CPU implements Runnable{
-    
+public class CPU implements Runnable {
+
     private int time;
     private float cpuUtilization;
 
@@ -43,20 +43,18 @@ public class CPU implements Runnable{
     public void setCpuUtilization(float cpuUtilization) {
         this.cpuUtilization = cpuUtilization;
     }
-    
-    
-    
-    public boolean resetTime(){
+
+    public boolean resetTime() {
         time = 0;
         return true;
     }
-    
-    public boolean startTiming(){
-        time ++;
+
+    public boolean startTiming() {
+        time++;
         return true;
     }
-    
-    public int getTime(){
+
+    public int getTime() {
         return time;
     }
 
@@ -69,10 +67,10 @@ public class CPU implements Runnable{
             } catch (InterruptedException ex) {
                 Logger.getLogger(CPU.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if (time == Integer.MAX_VALUE){
+            if (time == Integer.MAX_VALUE) {
                 resetTime();
             }
         }
     }
-    
+
 }
