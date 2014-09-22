@@ -46,10 +46,7 @@ public class Job {
         this.serviceTime = serviceTime;
         this.jobId = jobId;
         this.cpu1_Job = cp;
-    }
-
-    public Job(int period, int serviceTime, int jobId) {
-
+        this.processedTime = 0;
     }
 
     // This will update the nextDeadline 
