@@ -24,12 +24,14 @@
 
 package ossheduleredf;
 
+import java.util.Iterator;
+
 
 public class OSShedulerEDF implements Runnable{
 
-    public Queue runnableQueue;
-    public Queue blockedQueue;
-    public Queue runningQueue;
+    private Queue runnableQueue;
+    private Queue blockedQueue;
+    private Queue runningQueue;
     public CPU cpu1;
     
    // public 
@@ -77,6 +79,13 @@ public class OSShedulerEDF implements Runnable{
     public boolean addNewJob(Job newJob){
         newJob.setRunnable();
         return runnableQueue.add(newJob);
+    }
+    
+    public void schedule(){
+        for (Iterator iterator = runningQueue.iterator(); iterator.hasNext();) {
+            Object next = iterator.next();
+            
+        }
     }
     
     @Override
