@@ -37,6 +37,7 @@ public class Frame_1 extends javax.swing.JFrame {
     public OSShedulerEDF scheduler;
     public int noOfJobs= 5;
     public Job jobArray[]= new Job[noOfJobs];
+    public static CPU cpu= new CPU();
     /**
      * Creates new form Frame_1
      */
@@ -768,9 +769,9 @@ public class Frame_1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonStart_job2ActionPerformed
 
     private void jButtonStart_job1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStart_job1ActionPerformed
-        jProgressBar1.setMaximum(jobArray[0].absoluteDeadline);
+        jProgressBar1.setMaximum(jobArray[0].period);
         jProgressBar1.setValue(jobArray[0].serviceTime);
-        jProgressBar1.setString("process 1");
+        //System.out.println(jobArray[0].absoluteDeadline);
         
     }//GEN-LAST:event_jButtonStart_job1ActionPerformed
 
@@ -883,7 +884,7 @@ public class Frame_1 extends javax.swing.JFrame {
         scheduler= new OSShedulerEDF();
         
         for(int i=0; i<noOfJobs; i++){
-            jobArray[i]= new Job(deadlineArray[i], serviceTimeArray[i], i);
+            jobArray[i]= new Job(deadlineArray[i], serviceTimeArray[i], i,cpu);
             scheduler.addNewJob(jobArray[i]);
             System.out.println("new job added to scheduler. period: "+deadlineArray[i]+" service time: "+serviceTimeArray[i]);
         }
@@ -893,6 +894,7 @@ public class Frame_1 extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -932,10 +934,13 @@ public class Frame_1 extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        // CPU thread
+        Thread cpuThread= new Thread(cpu);
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Frame_1().setVisible(true);
+                cpuThread.start();
             }
         });
     }
