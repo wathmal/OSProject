@@ -32,8 +32,8 @@ public class Queue {
     private int earliestDeadlineJobid;
     private Job EDFJob;
     private float queueProcessUtilization; //currently using an int may be a float is
-                                    //a better
-    
+    //a better
+
     public Queue() {
         this.jobs = new ArrayList<>();
         earliestDeadlineJobid = 0;
@@ -112,12 +112,11 @@ public class Queue {
     }
 
     public void setQueueProcessUtilization() {
-        float precentage = 0 ;
+        float precentage = 0;
         for (Job job : jobs) {
-            precentage += (float)job.getServiceTime()/job.getPeriod();
+            precentage += (float) job.getServiceTime() / job.getPeriod();
         }
         queueProcessUtilization = precentage;
     }
-    
-    
+
 }
