@@ -51,6 +51,10 @@ public class Job {
         
     }
     
+    public void updateNextDeadline(){
+        
+    }
+    
     public int getServiceTime() {
         return serviceTime;
     }
