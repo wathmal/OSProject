@@ -863,17 +863,17 @@ public class Frame_1 extends javax.swing.JFrame {
         int serviceTimeArray[]= new int [noOfJobs];
         
         
-        deadlineArray[0]= Integer.parseInt((jTextFieldP_job1.getText().equals(""))?jTextFieldP_job1.getText():"0");
-        deadlineArray[1]= Integer.parseInt((jTextFieldP_job2.getText().equals(""))?jTextFieldP_job2.getText():"0");
-        deadlineArray[2]= Integer.parseInt((jTextFieldP_job3.getText().equals(""))?jTextFieldP_job3.getText():"0");
-        deadlineArray[3]= Integer.parseInt((jTextFieldP_job4.getText().equals(""))?jTextFieldP_job4.getText():"0");
-        deadlineArray[4]= Integer.parseInt((jTextFieldP_job5.getText().equals(""))?jTextFieldP_job5.getText():"0");
+        deadlineArray[0]= Integer.parseInt(!(jTextFieldP_job1.getText().equals(""))?jTextFieldP_job1.getText():"0");
+        deadlineArray[1]= Integer.parseInt(!(jTextFieldP_job2.getText().equals(""))?jTextFieldP_job2.getText():"0");
+        deadlineArray[2]= Integer.parseInt(!(jTextFieldP_job3.getText().equals(""))?jTextFieldP_job3.getText():"0");
+        deadlineArray[3]= Integer.parseInt(!(jTextFieldP_job4.getText().equals(""))?jTextFieldP_job4.getText():"0");
+        deadlineArray[4]= Integer.parseInt(!(jTextFieldP_job5.getText().equals(""))?jTextFieldP_job5.getText():"0");
         
-        serviceTimeArray[0]= Integer.parseInt((jTextFieldS_job1.getText().equals(""))?jTextFieldS_job1.getText():"0");
-        serviceTimeArray[1]= Integer.parseInt((jTextFieldS_job2.getText().equals(""))?jTextFieldS_job2.getText():"0");
-        serviceTimeArray[2]= Integer.parseInt((jTextFieldS_job3.getText().equals(""))?jTextFieldS_job3.getText():"0");
-        serviceTimeArray[3]= Integer.parseInt((jTextFieldS_job4.getText().equals(""))?jTextFieldS_job4.getText():"0");
-        serviceTimeArray[4]= Integer.parseInt((jTextFieldS_job5.getText().equals(""))?jTextFieldS_job5.getText():"0");
+        serviceTimeArray[0]= Integer.parseInt(!(jTextFieldS_job1.getText().equals(""))?jTextFieldS_job1.getText():"0");
+        serviceTimeArray[1]= Integer.parseInt(!(jTextFieldS_job2.getText().equals(""))?jTextFieldS_job2.getText():"0");
+        serviceTimeArray[2]= Integer.parseInt(!(jTextFieldS_job3.getText().equals(""))?jTextFieldS_job3.getText():"0");
+        serviceTimeArray[3]= Integer.parseInt(!(jTextFieldS_job4.getText().equals(""))?jTextFieldS_job4.getText():"0");
+        serviceTimeArray[4]= Integer.parseInt(!(jTextFieldS_job5.getText().equals(""))?jTextFieldS_job5.getText():"0");
         
         OSShedulerEDF scheduler= new OSShedulerEDF();
         for(int i=0; i<noOfJobs; i++){
