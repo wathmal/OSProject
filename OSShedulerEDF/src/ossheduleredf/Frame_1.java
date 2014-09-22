@@ -936,11 +936,13 @@ public class Frame_1 extends javax.swing.JFrame {
 
         // CPU thread
         Thread cpuThread= new Thread(cpu);
+        Thread schedular_1 = new Thread(scheduler);
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Frame_1().setVisible(true);
                 cpuThread.start();
+                scheduler_1.start();
             }
         });
     }
