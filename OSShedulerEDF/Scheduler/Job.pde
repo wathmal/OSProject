@@ -22,6 +22,7 @@ getServiceTime() - return the service time of the Job
 */
 
 final int PERCENTAGE_RADIUS = 20;
+
 class Job
 {
   public controlP5.Numberbox period;
@@ -30,6 +31,8 @@ class Job
   public controlP5.Textlabel jobIdLabel;
   public controlP5.Button dispatchButton;
   public controlP5.Button killButton;
+  TimelineQueue timeLine;
+
   public int posx;
   public int posy;
   public int myid;
@@ -37,7 +40,7 @@ class Job
   public int nextDeadline; //for repeating jobs
   public int processedTime;
   public int arrivalTime;
-  public boolean state;
+  public int state;
   public int absoluteDeadline;
   public float completionPercentage; // = processedTime/serviceTime * 100%
   
@@ -49,23 +52,8 @@ class Job
     nextDeadline = -1;
     processedTime = 0;
     myid = getUniqueJobID();
-    /*
-      ADDITIONAL UI ELEMENTS TODO
-      ----------------------------
-      JOB DISPATCH BUTTON (>)
-      JOB HALT BUTTON (x)
-      JOB COMPLETION PERCENTAGE LABEL
-      
-      pJOB ID LABEL
-      
-      BACKGROUND BOX
-      
-      CREATED
-      -------
-      SERVICE TIME NUMBER BOX
-      DEADLINE NUMBER BOX
-      
-    */
+
+    this.timeLine = new TimelineQueue(posx, posy, TIMELINE_LENGTH, TIMELINE_CELL_WIDTH, JOB_WIDGET_HEIGHT);
     
     
     this.jobIdLabel = cp5.addTextlabel(myid + "")
@@ -100,7 +88,8 @@ class Job
     this.dispatchButton = cp5.addButton(myid + "d")
                              .setPosition(serviceTime.getPosition().x + JOB_WIDTH + 2, posy + 13)
                              .setSize(JOB_HEIGHT, JOB_HEIGHT)
-                             .setCaptionLabel("  >");
+                             .setCaptionLabel("  >")
+                             .setSwitch(true); 
     this.killButton = cp5.addButton(myid + "k")
                          .setPosition(dispatchButton.getPosition().x + JOB_HEIGHT + 2, posy + 13)
                          .setSize(JOB_HEIGHT, JOB_HEIGHT)
@@ -117,8 +106,18 @@ class Job
     this.dispatchButton.setPosition(serviceTime.getPosition().x + JOB_WIDTH + 2, posy + 13);
     this.killButton.setPosition(dispatchButton.getPosition().x + JOB_HEIGHT + 2, posy + 13);
     this.jobIdLabel.setPosition(posx, posy);
+    timeLine.move(posx, posy);
   }
   
+  public void hide()
+  {
+    this.period.hide();
+    this.serviceTime.hide();
+    this.percentage.hide();
+    this.dispatchButton.hide();
+    this.killButton.hide();
+    this.jobIdLabel.hide();
+  }
   public void removeJob(){
     this.period.remove();
     this.serviceTime.remove();
@@ -139,7 +138,6 @@ class Job
   {
     return (int)this.period.getValue();
   }
-  
-  
+
 }
 

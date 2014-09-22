@@ -1,101 +1,111 @@
-Canvas cc;
+final int JOB_WIDGET_PADDING = 10;
 
-public int counter = 0; 
-int jobAvailability[] = new int[10];
-Job jobs[]; //Array in the job poolf
-
-
-class JobPool extends Canvas {
-
-  public int maxJobCount; // Number of jobs in the pool
+class JobPool
+{
+  private int posx;
+  private int posy;
+  private int maxJobCount;
+  private int top;
   
-  // Constructor
-  JobPool()
-  {
-    maxJobCount = height/JOB_WIDGET_HEIGHT - 1; // Number of jobs = 10
-    jobs = new Job[maxJobCount]; // Creating the job pool array of 10
-    println("maxJobCount = " + maxJobCount);
-    }
-  
-  // Constructer + maxJobCount 
-  JobPool(int maxJobCount)
-  {
-    this.maxJobCount = maxJobCount;
-    jobs = new Job[maxJobCount];
+  Job jobs[];
+  Button addButton;
+  JobPool(int x, int y) {
+  	posx = x;
+  	posy = y;
+  	top = 0;
+    setMaxJobCount();
+  	jobs = new Job[maxJobCount];
+  	addButton = cp5.addButton("addButton")
+  				   .setPosition(posx, height - JOB_WIDGET_HEIGHT - 10)
+  				   .setSize(JOB_WIDGET_WIDTH, JOB_WIDGET_HEIGHT)
+  				   .setCaptionLabel("[+] Add Job")
+  				   .activateBy(ControlP5.RELEASE);
   }
-  
-  public boolean push(Job job)
-  {
-    for(int i = 0;i < maxJobCount;i++)
-      if(jobs[i] == null) { // Adding the new job to the first available position and return true
-        jobs[i] = job;
-        createInterface();
-        return true;
-      }
-      return false; // If cant add to the pool return false
-  }
-  
-  // Poping the most urgent job  
-  public Job getMostUrgent()
-  {
-    Job mostUrgentJob = null;
-    int i = 0;
-    while(i < maxJobCount) {
-      if(jobs[i] != null) {
-        if(mostUrgentJob == null)
-          mostUrgentJob = jobs[i];
-        else if(mostUrgentJob.nextDeadline > jobs[i].nextDeadline)
-          mostUrgentJob = jobs[i];
-      }
-      i++;
-    }
-    return mostUrgentJob;
-  }
-    
-  int y;
 
-  public void setup(PApplet theApplet) {
-    y = 200;
-  }  
-
-  public void draw(PApplet p) {
-    p.fill(#171717);
-    //p.rect(5, 200, 250, 545, 5);
-  } 
-  
-  // This will create the sub-interface(Left side of the mai interface)
-  // using the processes which are created in the 'jobs' array
-  public void createInterface(){  
-    for(int i = 0 ; i  < maxJobCount; i++){
-      
-      if(jobs[i]!=null){
-        //System.out.println(jobs[i].myid);
-       
-          jobs[i].move(20,60+(i*60));
-          //counter++;
-      }
-    }
+  public void setMaxJobCount()
+  {
+  	maxJobCount =  ( height - 10 - posy) / (JOB_WIDGET_PADDING + JOB_WIDGET_HEIGHT) -1; // -10 is for bottom padding
   }
-  
-  // This will remove the given job from the left sub-interface 
-  public void remove(int job_id){
-    int i = 0;
+
+  public void push(Job job) {
+  	if(top < maxJobCount)
+  	{
+  		jobs[top++] = job;
+  	}
+  	render();
+  }
+
+  public void kill(int jobid) {
+  	int i = 0;
     for(i = 0;i < maxJobCount;i++)
-      if(jobs[i] != null && jobs[i].myid == job_id)
+      if(jobs[i] != null && jobs[i].myid == jobid)
         break;
     
     if(jobs[i] != null) {
-      jobs[i].removeJob();
-      //maxJobCount--;  
+      jobs[i].hide();
+      jobs[i] = null;
+      //println("Item Removed");
     }
     
     for(;i < maxJobCount - 1;i++)
       jobs[i] = jobs[i + 1];
-    
-    background(0);
-    createInterface();  
-    println("maxJobCount = " + maxJobCount);
+  	top--;
+  	render();
+  	print(maxJobCount + " | ");
+  	for (Job j : jobs) {
+  		print(j == null ? "null, " : j.jobIdLabel.getName() + ",");
+  	}
+  	println();
+  	//jobs[removedJobIndex].removeJob();
+  }
+
+  public void kill(Job job)
+  {
+  	remove(job.myid);
+  }
+
+  public Job getJob(int jobid)
+  {
+  	for(int i = 0;i < top;i++)
+  		if(jobs[i].myid == jobid) {
+  			return jobs[i];
+  		}	
+  	return null;
+  }
+
+  public void dispatch(int jobid) {
+  	getJob(jobid).state = 1;
+  }
+
+  public void freeze(int jobid)
+  {
+  	getJob(jobid).state = 0;
   }
   
+  
+  
+  public void render()
+  {
+  	background(0); //reset background to clear any trailing painted pixels in the canvas
+  	int cnt = 0;
+  	for(int i = 0;i < top;i++)
+  		if(jobs[i] != null) {
+  			jobs[i].move(posx, posy + i * (JOB_WIDGET_HEIGHT + JOB_WIDGET_PADDING));
+  			jobs[i].timeLine.move(posx + JOB_WIDGET_WIDTH + 10, posy + i * (JOB_WIDGET_HEIGHT + JOB_WIDGET_PADDING) );
+  			jobs[i].timeLine.render();
+  		}
+  	// for (Job job : jobs) 
+  	// 	if(job != null)
+  	// 		job.move(posx, posy + cnt++ * (JOB_WIDGET_HEIGHT + JOB_WIDGET_PADDING));
+	addButton.setPosition(posx, height - JOB_WIDGET_HEIGHT - 10);
+  }	
+  public void move(int x, int y) {
+  	posx = x;
+  	posy = y;
+  	render();
+  }
+  public int getMaxJobCount() {
+    return maxJobCount;
+  }
 
 }

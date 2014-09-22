@@ -1,7 +1,5 @@
 final int QUEUE_LEN = 20;
-final color JOBRUNNING_COLOR = #ccff00;
-final color JOBNOTRUNNING_COLOR = #000000;
-final color JOBPREEMPT_COLOR = #FF0000;
+
 
 class TimelineQueue
 {
@@ -42,14 +40,14 @@ class TimelineQueue
       for(int i = 0;i < top;i++)
       {
         if(arr[i] == 0)
-          fill(JOBNOTRUNNING_COLOR);
+          fill(COLOR_TIMELINE_SLEEPING);
         else
-          fill(JOBRUNNING_COLOR);
+          fill(COLOR_TIMELINE_RUNNING);
         
         rect(posx + (top - i) * cellWidth, posy, cellWidth, cellHeight);
         if(arr[i] == 2)
         {
-          fill(JOBPREEMPT_COLOR,127);
+          fill(COLOR_TIMELINE_PREEMPT,127);
           rect(posx + (top - i) * cellWidth + cellWidth - 2, posy, 2, cellHeight);
         }
       }
@@ -65,10 +63,14 @@ class TimelineQueue
       }
       top--;    
     }
-    println("Added value" + val + " " + top );
+    //println("Added value" + val + " " + top );
     arr[top++] = val;
     
   }
-  
+  public void move(int x, int y)
+  {
+    posx = x;
+    posy = y;
+  }
 }
 
