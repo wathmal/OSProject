@@ -53,9 +53,9 @@ public class Job {
     
     public void updateNextDeadline(){
         if(isRunnable() == true){
-            this.nextDeadline = this.absoluteDeadline - cp.getTime();
+            this.nextDeadline = this.absoluteDeadline - cpu1_Job.getTime();
         }else if(isRunning() == true){
-            this.nextDeadline = this.absoluteDeadline - cp.getTime() - (this.serviceTime - this.processedTime) ;
+            this.nextDeadline = this.absoluteDeadline - cpu1_Job.getTime() - (this.serviceTime - this.processedTime) ;
         }
     }
     
