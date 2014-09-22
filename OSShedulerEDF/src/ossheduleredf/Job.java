@@ -1,7 +1,7 @@
 /* 
  * The MIT License
  *
- * Copyright 2014 krv.
+ * Copyright 2014 Aureole.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,48 +23,67 @@
  */
 package ossheduleredf;
 
-
 public class Job {
-    public int serviceTime;// at the job creation
-    public int period; // at the job creation
-    public int jobId;// at the job creation
-    public int nextDeadline; //for repeating jobs // changing
-    public int processedTime; // <= service time
+
+    public int serviceTime; // defined at the job creation // Fixed
+    public int period; // defined at the job creation // Fixed
+    public int jobId; // defined at the job creation // Fixed
+    public int nextDeadline; // for repeating jobs // Keep_Changing
+    public int processedTime; // processedTime <= serviceTime
     public int arrivalTime;// at the job creation
     public boolean runnable;   //running or not
-    public boolean running; 
+    public boolean running;
     public boolean blocked;
     public int absoluteDeadline;
     public float completionPercentage; // processed time  /  service time
     public CPU cpu1_Job;
-    
-    public Job(){} //no argument constructor
-    
-    public Job(int period, int serviceTime, int jobId, CPU cp ){
+
+    public Job() {
+    } //no argument constructor
+
+    public Job(int period, int serviceTime, int jobId, CPU cp) {
         this.period = period;
         this.serviceTime = serviceTime;
         this.jobId = jobId;
-        this.cpu1_Job = cp;                
+        this.cpu1_Job = cp;
     }
-    
-    public Job(int period, int serviceTime, int jobId ){
-        
+
+    public Job(int period, int serviceTime, int jobId) {
+
     }
-    
-    public void updateNextDeadline(){
-        if(isRunnable() == true){
-            this.nextDeadline = this.absoluteDeadline - cpu1_Job.getTime();
-        }else if(isRunning() == true){
-            this.nextDeadline = this.absoluteDeadline - cpu1_Job.getTime() - (this.serviceTime - this.processedTime) ;
+
+    // This will update the nextDeadline 
+    public void updateNextDeadline() {
+        if (isRunnable() == true) { // If job is in Runnable Queue --> Completed jobs will be considered 
+            this.setNextDeadline(this.getAbsoluteDeadline() - cpu1_Job.getTime());
+        } else if (isRunning() == true) { // If the job is in Running Queue --> jobs that are preemped also considered in here
+            this.setNextDeadline(this.getAbsoluteDeadline() - cpu1_Job.getTime() - this.getServiceTime() + this.getProcessedTime());
         }
     }
     
+    // This will update the completionPersentage
+    public void updateCompletionPersentage(){
+        if(isRunnable() == true){ // If job is in Runnable Queue
+            this.setCompletionPercentage((float)0.0);
+        }else if(isRunning() == true){ // If job is in Running Queue
+            this.setCompletionPercentage(((float)this.getProcessedTime()/this.getServiceTime())*100);
+        }
+    }
+
     public int getServiceTime() {
         return serviceTime;
     }
 
     public void setServiceTime(int serviceTime) {
         this.serviceTime = serviceTime;
+    }
+    
+    public int getPeriod(){
+        return period;
+    }
+    
+    public void setPeriod(int Period){
+        this.period = Period;
     }
 
     public int getJobId() {
@@ -99,6 +118,14 @@ public class Job {
         this.arrivalTime = arrivalTime;
     }
 
+    public int getAbsoluteDeadline(){
+        return absoluteDeadline;
+    }
+    
+    public void setAbsoluteDeadline(int absDeadline){
+        this.absoluteDeadline = absDeadline;
+    }
+    
     public boolean isRunnable() {
         return runnable;
     }
@@ -136,10 +163,9 @@ public class Job {
     public void setCompletionPercentage(float completionPercentage) {
         this.completionPercentage = completionPercentage;
     }
-    
-    public void suspend(){
-        
+
+    public void suspend() {
+
     }
-    
-    
+
 }
