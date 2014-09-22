@@ -1,7 +1,7 @@
 /* 
  * The MIT License
  *
- * Copyright 2014 krv.
+ * Copyright 2014 Aureole.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -67,6 +67,14 @@ public class OSShedulerEDF implements Runnable{
         return true;
     }
     
+    public boolean runnableToRunning(int id){
+        Job temp = runnableQueue.getEDFJob();
+        temp.run();
+        runnableQueue.remove(temp);
+        runningQueue.add(temp);
+        return true;
+    }
+    
     public boolean swapBetweenRunninBlocked(Job o){
        if( o.isRunning()){
         runningToBlocked(o.getJobId());
@@ -83,8 +91,12 @@ public class OSShedulerEDF implements Runnable{
     
     public void schedule(){
         for (Iterator iterator = runningQueue.iterator(); iterator.hasNext();) {
-            Object next = iterator.next();
-            
+            Job next = (Job) iterator.next();
+            if( runnableQueue.getQueueProcessUtilization() > 100 ){
+                System.out.println("Full utilization");
+            }else{
+                
+            }
         }
     }
     
