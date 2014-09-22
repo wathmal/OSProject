@@ -1,7 +1,7 @@
 /* 
  * The MIT License
  *
- * Copyright 2014 Aureole.
+ * Copyright 2014 krv.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,9 @@ public class OSShedulerEDF implements Runnable{
     public Queue runnableQueue;
     public Queue blockedQueue;
     public Queue runningQueue;
+    public CPU cpu1;
+    
+   // public 
     
     public OSShedulerEDF(){
         runnableQueue = new Queue(); //add new items to this queue and upon user
@@ -36,9 +39,18 @@ public class OSShedulerEDF implements Runnable{
         blockedQueue = new Queue();
         runningQueue = new Queue();
     }
+    
+    public OSShedulerEDF(CPU cp){
+        runnableQueue = new Queue(); //add new items to this queue and upon user
+                                     //request move to runningQueue
+        blockedQueue = new Queue();
+        runningQueue = new Queue();
+        cpu1 = cp;
+    }
 
     public boolean runningToBlocked(int id){
         Job temp = runningQueue.jobs.get(id);
+        temp.block();
         runningQueue.jobs.remove(id);
         blockedQueue.jobs.add(temp);
         return true;
@@ -46,6 +58,7 @@ public class OSShedulerEDF implements Runnable{
     
     public boolean blockedToRunning(int id){
         Job temp = blockedQueue.jobs.get(id);
+        temp.run();
         blockedQueue.jobs.remove(id);
         runningQueue.jobs.add(temp);
         return true;
@@ -58,6 +71,11 @@ public class OSShedulerEDF implements Runnable{
          blockedToRunning(o.getJobId());
        }
         return true;
+    }
+    
+    public boolean addNewJob(Job newJob){
+        newJob.setRunnable();
+        return runnableQueue.add(newJob);
     }
     
     @Override
