@@ -52,7 +52,11 @@ public class Job {
     }
     
     public void updateNextDeadline(){
-        
+        if(isRunnable() == true){
+            this.nextDeadline = this.absoluteDeadline - cp.getTime();
+        }else if(isRunning() == true){
+            this.nextDeadline = this.absoluteDeadline - cp.getTime() - (this.serviceTime - this.processedTime) ;
+        }
     }
     
     public int getServiceTime() {
