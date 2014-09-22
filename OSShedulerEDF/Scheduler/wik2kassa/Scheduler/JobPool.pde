@@ -1,122 +1,111 @@
-Canvas cc;
+final int JOB_WIDGET_PADDING = 10;
 
-public int counter = 0; 
-int jobAvailability[] = new int[10];
-Job jobs[]; //Array in the job pool
-
-
-class JobPool extends Canvas {
+class JobPool
+{
+  private int posx;
+  private int posy;
+  private int maxJobCount;
+  private int top;
   
-  int y;
+  Job jobs[];
+  Button addButton;
+  JobPool(int x, int y) {
+  	posx = x;
+  	posy = y;
+  	top = 0;
+    setMaxJobCount();
+  	jobs = new Job[maxJobCount];
+  	addButton = cp5.addButton("addButton")
+  				   .setPosition(posx, height - JOB_WIDGET_HEIGHT - 10)
+  				   .setSize(JOB_WIDGET_WIDTH, JOB_WIDGET_HEIGHT)
+  				   .setCaptionLabel("[+] Add Job")
+  				   .activateBy(ControlP5.RELEASE);
+  }
 
-  public void setup(PApplet theApplet) {
-    y = 200;
-  }  
+  public void setMaxJobCount()
+  {
+  	maxJobCount =  ( height - 10 - posy) / (JOB_WIDGET_PADDING + JOB_WIDGET_HEIGHT) -1; // -10 is for bottom padding
+  }
 
-  public void draw(PApplet p) {
-    p.fill(#171717);
-    //p.rect(5, 200, 250, 545, 5);
-  } 
-  
-  // This will create the sub-interface(Left side of the mai interface)
-  // using the processes which are created in the 'jobs' array
-  public void createInterface(){  
+  public void push(Job job) {
+  	if(top < maxJobCount)
+  	{
+  		jobs[top++] = job;
+  	}
+  	render();
+  }
+
+  public void kill(int jobid) {
+  	int i = 0;
+    for(i = 0;i < maxJobCount;i++)
+      if(jobs[i] != null && jobs[i].myid == jobid)
+        break;
     
-    for(int i = 0 ; i  < jobCount; i ++){
-      
-      if(jobs[i]!=null){
-        //System.out.println(jobs[i].myid);
-          jobAvailability[i] = 1;
-          jobs[i].move(20,60+(i*60));
-          counter++;
-      }else{
-          jobAvailability[i] = 0;
-      }
+    if(jobs[i] != null) {
+      jobs[i].hide();
+      jobs[i] = null;
+      //println("Item Removed");
     }
-  }
-  
-  // This will remove the given job from the left sub-interface 
-  public void remove(int job_id){
-    for(int i = 0 ; i<jobCount ; i++){
-        if(jobs[i] != null && job_id == jobs[i].myid ){
-            jobs[i].removeJob();
-            
-            
-            if(i+1==jobCount){
-               jobs[i] = null;
-               jobAvailability[i] = 0;         
-            }else{
-              System.out.println("j");
-              for(int j = i; j < jobCount-1;j++){                
-                jobs[j] = jobs[j+1];
-                jobAvailability[j] = jobAvailability[j+1];
-                System.out.println(jobAvailability[j]);
-              }
-              
-            }
-            background(0);
-            createInterface();
-            break;        
-        }
-        
-    }  
+    
+    for(;i < maxJobCount - 1;i++)
+      jobs[i] = jobs[i + 1];
+  	top--;
+  	render();
+  	print(maxJobCount + " | ");
+  	for (Job j : jobs) {
+  		print(j == null ? "null, " : j.jobIdLabel.getName() + ",");
+  	}
+  	println();
+  	//jobs[removedJobIndex].removeJob();
   }
 
-  
+  public void kill(Job job)
+  {
+  	remove(job.myid);
+  }
 
-  
-  int jobCount; // Number of jobs in the pool
-  
-  // Constructor
-  JobPool()
+  public Job getJob(int jobid)
   {
-    jobCount = height/JOB_WIDGET_HEIGHT - 1; // Number of jobs = 10
-    jobs = new Job[jobCount]; // Creating the job pool array of 10
+  	for(int i = 0;i < top;i++)
+  		if(jobs[i].myid == jobid) {
+  			return jobs[i];
+  		}	
+  	return null;
   }
-  
-  // Constructer + jobCount 
-  JobPool(int jobCount)
-  {
-    this.jobCount = jobCount;
-    jobs = new Job[jobCount];
+
+  public void dispatch(int jobid) {
+  	getJob(jobid).state = 1;
   }
-  
-  // Adding new jobs to jobPool
-  public boolean push(Job job)
+
+  public void freeze(int jobid)
   {
-    for(int i = 0;i < jobCount;i++)
-      if(jobs[i] == null) { // Adding the new job to the first available position and return true
-        jobs[i] = job;
-        createInterface();
-        return true;
-      }
-      return false; // If cant add to the pool return false
-  }
-  
-  // Poping the most urgent job  
-  public Job getMostUrgent()
-  {
-    Job mostUrgentJob = null;
-    int i = 0;
-    while(i < jobCount) {
-      if(jobs[i] != null) {
-        if(mostUrgentJob == null)
-          mostUrgentJob = jobs[i];
-        else if(mostUrgentJob.nextDeadline > jobs[i].nextDeadline)
-          mostUrgentJob = jobs[i];
-      }
-      i++;
-    }
-    return mostUrgentJob;
+  	getJob(jobid).state = 0;
   }
   
   
-  public void printPool()
+  
+  public void render()
   {
-    int i = -1;
-    while(++i < jobCount)
-      if(jobs[i] != null)
-        print(jobs[i].myid +"("+ jobs[i].getPeriod()+")"  + " ");
-     println();
+  	background(0); //reset background to clear any trailing painted pixels in the canvas
+  	int cnt = 0;
+  	for(int i = 0;i < top;i++)
+  		if(jobs[i] != null) {
+  			jobs[i].move(posx, posy + i * (JOB_WIDGET_HEIGHT + JOB_WIDGET_PADDING));
+  			jobs[i].timeLine.move(posx + JOB_WIDGET_WIDTH + 10, posy + i * (JOB_WIDGET_HEIGHT + JOB_WIDGET_PADDING) );
+  			jobs[i].timeLine.render();
+  		}
+  	// for (Job job : jobs) 
+  	// 	if(job != null)
+  	// 		job.move(posx, posy + cnt++ * (JOB_WIDGET_HEIGHT + JOB_WIDGET_PADDING));
+	addButton.setPosition(posx, height - JOB_WIDGET_HEIGHT - 10);
+  }	
+  public void move(int x, int y) {
+  	posx = x;
+  	posy = y;
+  	render();
   }
+  public int getMaxJobCount() {
+    return maxJobCount;
+  }
+
 }
