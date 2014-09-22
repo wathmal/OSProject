@@ -23,16 +23,15 @@
  */
 package ossheduleredf;
 
-//~--- JDK imports ------------------------------------------------------------
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Queue {
-    public ArrayList<Job> jobs;
-    public int earliestDeadlineJobid;
-    public Job EDFJob;
-    
+
+    private ArrayList<Job> jobs;
+    private int earliestDeadlineJobid;
+    private Job EDFJob;
+
     public Queue() {
         this.jobs = new ArrayList<>();
         earliestDeadlineJobid = 0;
@@ -74,7 +73,7 @@ public class Queue {
         updateED();
         return temp;
     }
-    
+
     public Job removeEDFjob() {
         int arrayIndex = jobs.indexOf(EDFJob);
         Job o = jobs.get(arrayIndex);
@@ -86,11 +85,11 @@ public class Queue {
     public void clear() {
         jobs.clear();
     }
-    
-    public void updateED(){
+
+    public void updateED() {
         int ED = Integer.MAX_VALUE;
         for (Job job : jobs) {
-            if(ED > job.getNextDeadline() ){
+            if (ED > job.getNextDeadline()) {
                 ED = job.getNextDeadline();
                 earliestDeadlineJobid = job.getJobId();
                 EDFJob = job;
@@ -98,5 +97,3 @@ public class Queue {
         }
     }
 }
-
-
