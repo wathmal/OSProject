@@ -34,7 +34,9 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author HP
  */
 public class Frame_1 extends javax.swing.JFrame {
-
+    public OSShedulerEDF scheduler;
+    public int noOfJobs= 5;
+    public Job jobArray[]= new Job[noOfJobs];
     /**
      * Creates new form Frame_1
      */
@@ -757,7 +759,8 @@ public class Frame_1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonStart_job4ActionPerformed
 
     private void jButtonStart_job3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStart_job3ActionPerformed
-        // TODO add your handling code here:
+        
+        
     }//GEN-LAST:event_jButtonStart_job3ActionPerformed
 
     private void jButtonStart_job2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStart_job2ActionPerformed
@@ -765,8 +768,10 @@ public class Frame_1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonStart_job2ActionPerformed
 
     private void jButtonStart_job1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStart_job1ActionPerformed
-        int y = 0;
-        jProgressBar1.setValue(50);      
+        jProgressBar1.setMaximum(jobArray[0].absoluteDeadline);
+        jProgressBar1.setValue(jobArray[0].serviceTime);
+        jProgressBar1.setString("process 1");
+        
     }//GEN-LAST:event_jButtonStart_job1ActionPerformed
 
     private void jButtonKill_job10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonKill_job10ActionPerformed
@@ -858,7 +863,6 @@ public class Frame_1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldS_job10ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int noOfJobs= 5;
         int deadlineArray[]= new int[noOfJobs];
         int serviceTimeArray[]= new int [noOfJobs];
         
@@ -875,10 +879,12 @@ public class Frame_1 extends javax.swing.JFrame {
         serviceTimeArray[3]= Integer.parseInt(!(jTextFieldS_job4.getText().equals(""))?jTextFieldS_job4.getText():"0");
         serviceTimeArray[4]= Integer.parseInt(!(jTextFieldS_job5.getText().equals(""))?jTextFieldS_job5.getText():"0");
         
-        OSShedulerEDF scheduler= new OSShedulerEDF();
+        // sechduler object first creates here :)
+        scheduler= new OSShedulerEDF();
+        
         for(int i=0; i<noOfJobs; i++){
-            Job j= new Job(deadlineArray[i], serviceTimeArray[i], i);
-            scheduler.addNewJob(j);
+            jobArray[i]= new Job(deadlineArray[i], serviceTimeArray[i], i);
+            scheduler.addNewJob(jobArray[i]);
             System.out.println("new job added to scheduler. period: "+deadlineArray[i]+" service time: "+serviceTimeArray[i]);
         }
         // TODO add your handling code here:
