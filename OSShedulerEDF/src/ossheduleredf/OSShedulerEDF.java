@@ -67,7 +67,7 @@ public class OSShedulerEDF implements Runnable{
         return true;
     }
     
-    public boolean runnableToRunning(int id){
+    public boolean runnableToRunning(){
         Job temp = runnableQueue.getEDFJob();
         temp.run();
         runnableQueue.remove(temp);
@@ -92,17 +92,21 @@ public class OSShedulerEDF implements Runnable{
     public void schedule(){
         for (Iterator iterator = runningQueue.iterator(); iterator.hasNext();) {
             Job next = (Job) iterator.next();
-            if( runnableQueue.getQueueProcessUtilization() > 100 ){
+            if( runnableQueue.getQueueProcessUtilization() > 50 ){
                 System.out.println("Full utilization");
             }else{
-                
+                runnableToRunning();
+                runningQueue.setQueueProcessUtilization();
             }
         }
     }
     
     @Override
     public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        while(true){
+            schedule();
+        }
+        
     }
     
     
