@@ -25,6 +25,8 @@
 package ossheduleredf;
 
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class OSShedulerEDF implements Runnable{
@@ -105,6 +107,11 @@ public class OSShedulerEDF implements Runnable{
     public void run() {
         while(true){
             schedule();
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(OSShedulerEDF.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
     }
