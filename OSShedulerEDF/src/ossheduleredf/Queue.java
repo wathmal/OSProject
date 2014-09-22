@@ -28,10 +28,11 @@ import java.util.Iterator;
 
 public class Queue {
 
-    private ArrayList<Job> jobs;
+    public ArrayList<Job> jobs;
     private int earliestDeadlineJobid;
     private Job EDFJob;
-
+    private int queueProcessUtilization; //currently using an int may be a float is
+                                    //a better
     public Queue() {
         this.jobs = new ArrayList<>();
         earliestDeadlineJobid = 0;
@@ -96,4 +97,22 @@ public class Queue {
             }
         }
     }
+
+    public int getEarliestDeadlineJobid() {
+        return earliestDeadlineJobid;
+    }
+
+    public Job getEDFJob() {
+        return EDFJob;
+    }
+
+    public int getQueueProcessUtilization() {
+        return queueProcessUtilization;
+    }
+
+    public void setQueueProcessUtilization(int queueProcessUtilization) {
+        this.queueProcessUtilization = queueProcessUtilization;
+    }
+    
+    
 }
