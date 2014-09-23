@@ -98,6 +98,7 @@ public class OSShedulerEDF implements Runnable{
                 System.out.println("Full utilization");
             }else{
                 runnableToRunning();
+                
                 runningQueue.setQueueProcessUtilization();
             }
         }
