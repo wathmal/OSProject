@@ -40,7 +40,7 @@ public class Job {
 
     //no argument constructor
     public Job() {
-    } 
+    }
 
     public Job(int period, int serviceTime, int jobId, CPU cp) {
         this.period = period;
@@ -50,16 +50,21 @@ public class Job {
         this.processedTime = 0;
     }
 
+    @Override
+        public String toString() {
+        return Integer.toString(jobId);
+    }
+
     // This will update the absoluteDeadline
-    public void updateAbsoluteDeadline(){
-        this.setAbsoluteDeadline(this.getArrivalTime()+this.getPeriod());
+    public void updateAbsoluteDeadline() {
+        this.setAbsoluteDeadline(this.getArrivalTime() + this.getPeriod());
     }
-    
+
     // This will increase the processedTime by one
-    public void process(){
-        this.setProcessedTime(this.getProcessedTime()+1);
+    public void process() {
+        this.setProcessedTime(this.getProcessedTime() + 1);
     }
-    
+
     // This will update the nextDeadline 
     public void updateNextDeadline() {
         if (isRunnable() == true) { // If job is in Runnable Queue --> Completed jobs will be considered 
@@ -68,13 +73,13 @@ public class Job {
             this.setNextDeadline(this.getAbsoluteDeadline() - cpu1_Job.getTime() - this.getServiceTime() + this.getProcessedTime());
         }
     }
-    
+
     // This will update the completionPersentage
-    public void updateCompletionPersentage(){
-        if(isRunnable() == true){ // If job is in Runnable Queue
-            this.setCompletionPercentage((float)0.0);
-        }else if(isRunning() == true){ // If job is in Running Queue
-            this.setCompletionPercentage(((float)this.getProcessedTime()/this.getServiceTime())*100);
+    public void updateCompletionPersentage() {
+        if (isRunnable() == true) { // If job is in Runnable Queue
+            this.setCompletionPercentage((float) 0.0);
+        } else if (isRunning() == true) { // If job is in Running Queue
+            this.setCompletionPercentage(((float) this.getProcessedTime() / this.getServiceTime()) * 100);
         }
     }
 
@@ -85,12 +90,12 @@ public class Job {
     public void setServiceTime(int serviceTime) {
         this.serviceTime = serviceTime;
     }
-    
-    public int getPeriod(){
+
+    public int getPeriod() {
         return period;
     }
-    
-    public void setPeriod(int Period){
+
+    public void setPeriod(int Period) {
         this.period = Period;
     }
 
@@ -126,14 +131,14 @@ public class Job {
         this.arrivalTime = arrivalTime;
     }
 
-    public int getAbsoluteDeadline(){
+    public int getAbsoluteDeadline() {
         return absoluteDeadline;
     }
-    
-    public void setAbsoluteDeadline(int absDeadline){
+
+    public void setAbsoluteDeadline(int absDeadline) {
         this.absoluteDeadline = absDeadline;
     }
-    
+
     public boolean isRunnable() {
         return runnable;
     }
