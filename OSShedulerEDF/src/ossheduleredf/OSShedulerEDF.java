@@ -29,9 +29,12 @@ import java.util.logging.Logger;
 
 public class OSShedulerEDF implements Runnable {
 
-    private Queue runnableQueue;
-    private Queue blockedQueue;
-    private Queue runningQueue;
+//    private Queue runnableQueue;
+//    private Queue blockedQueue;
+//    private Queue runningQueue;
+     Queue runnableQueue;
+     Queue blockedQueue;
+     Queue runningQueue;
     public CPU cpu1;
 
     // public 
