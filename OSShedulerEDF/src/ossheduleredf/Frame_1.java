@@ -36,7 +36,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Frame_1 extends javax.swing.JFrame {
     public static CPU cpu= new CPU();
     public static OSShedulerEDF scheduler = new OSShedulerEDF(cpu);
-    public int noOfJobs= 5;
+    public int noOfJobs= 10;
     public Job jobArray[]= new Job[noOfJobs];
     
     /**
@@ -770,8 +770,8 @@ public class Frame_1 extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonStart_job2ActionPerformed
 
     private void jButtonStart_job1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStart_job1ActionPerformed
-        jProgressBar1.setMaximum(jobArray[0].period);
-        jProgressBar1.setValue(jobArray[0].serviceTime);
+        //jProgressBar1.setMaximum(jobArray[0].period);
+        //jProgressBar1.setValue(jobArray[0].serviceTime);
         //System.out.println(jobArray[0].absoluteDeadline);
         
     }//GEN-LAST:event_jButtonStart_job1ActionPerformed
@@ -874,12 +874,22 @@ public class Frame_1 extends javax.swing.JFrame {
         deadlineArray[2]= Integer.parseInt(!(jTextFieldP_job3.getText().equals(""))?jTextFieldP_job3.getText():"0");
         deadlineArray[3]= Integer.parseInt(!(jTextFieldP_job4.getText().equals(""))?jTextFieldP_job4.getText():"0");
         deadlineArray[4]= Integer.parseInt(!(jTextFieldP_job5.getText().equals(""))?jTextFieldP_job5.getText():"0");
+        deadlineArray[5]= Integer.parseInt(!(jTextFieldP_job6.getText().equals(""))?jTextFieldP_job6.getText():"0");
+        deadlineArray[6]= Integer.parseInt(!(jTextFieldP_job7.getText().equals(""))?jTextFieldP_job7.getText():"0");
+        deadlineArray[7]= Integer.parseInt(!(jTextFieldP_job8.getText().equals(""))?jTextFieldP_job8.getText():"0");
+        deadlineArray[8]= Integer.parseInt(!(jTextFieldP_job9.getText().equals(""))?jTextFieldP_job9.getText():"0");
+        deadlineArray[9]= Integer.parseInt(!(jTextFieldP_job10.getText().equals(""))?jTextFieldP_job10.getText():"0");
         
         serviceTimeArray[0]= Integer.parseInt(!(jTextFieldS_job1.getText().equals(""))?jTextFieldS_job1.getText():"0");
         serviceTimeArray[1]= Integer.parseInt(!(jTextFieldS_job2.getText().equals(""))?jTextFieldS_job2.getText():"0");
         serviceTimeArray[2]= Integer.parseInt(!(jTextFieldS_job3.getText().equals(""))?jTextFieldS_job3.getText():"0");
         serviceTimeArray[3]= Integer.parseInt(!(jTextFieldS_job4.getText().equals(""))?jTextFieldS_job4.getText():"0");
         serviceTimeArray[4]= Integer.parseInt(!(jTextFieldS_job5.getText().equals(""))?jTextFieldS_job5.getText():"0");
+        serviceTimeArray[5]= Integer.parseInt(!(jTextFieldS_job6.getText().equals(""))?jTextFieldS_job6.getText():"0");
+        serviceTimeArray[6]= Integer.parseInt(!(jTextFieldS_job7.getText().equals(""))?jTextFieldS_job7.getText():"0");
+        serviceTimeArray[7]= Integer.parseInt(!(jTextFieldS_job8.getText().equals(""))?jTextFieldS_job8.getText():"0");
+        serviceTimeArray[8]= Integer.parseInt(!(jTextFieldS_job9.getText().equals(""))?jTextFieldS_job9.getText():"0");
+        serviceTimeArray[9]= Integer.parseInt(!(jTextFieldS_job10.getText().equals(""))?jTextFieldS_job10.getText():"0");
         
         
         
@@ -888,6 +898,30 @@ public class Frame_1 extends javax.swing.JFrame {
             scheduler.addNewJob(jobArray[i]);
             System.out.println("new job added to scheduler. period: "+deadlineArray[i]+" service time: "+serviceTimeArray[i]);
         }
+        
+        
+        jProgressBar1.setMaximum(jobArray[0].period);
+        jProgressBar2.setMaximum(jobArray[1].period);
+        jProgressBar3.setMaximum(jobArray[2].period);
+        jProgressBar4.setMaximum(jobArray[3].period);
+        jProgressBar5.setMaximum(jobArray[4].period);
+        jProgressBar6.setMaximum(jobArray[5].period);
+        jProgressBar7.setMaximum(jobArray[6].period);
+        jProgressBar8.setMaximum(jobArray[7].period);
+        jProgressBar9.setMaximum(jobArray[8].period);
+        jProgressBar10.setMaximum(jobArray[9].period);
+        
+        
+        jProgressBar1.setValue(jobArray[0].serviceTime);
+        jProgressBar2.setValue(jobArray[1].serviceTime);
+        jProgressBar3.setValue(jobArray[2].serviceTime);
+        jProgressBar4.setValue(jobArray[3].serviceTime);
+        jProgressBar5.setValue(jobArray[4].serviceTime);
+        jProgressBar6.setValue(jobArray[5].serviceTime);
+        jProgressBar7.setValue(jobArray[6].serviceTime);
+        jProgressBar8.setValue(jobArray[7].serviceTime);
+        jProgressBar9.setValue(jobArray[8].serviceTime);
+        jProgressBar10.setValue(jobArray[9].serviceTime);
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
