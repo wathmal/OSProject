@@ -85,7 +85,9 @@ public class OSShedulerEDF implements Runnable {
 
     public boolean addNewJob(Job newJob) {
         newJob.setRunnable();
+        System.out.println(newJob);
         return runnableQueue.add(newJob);
+        
     }
 
     public void schedule() throws InterruptedException {
