@@ -149,6 +149,7 @@ public class Job {
     }
 
     public void run() {
+        process();
         this.runnable = false;
         this.running = true;
         this.blocked = false;
