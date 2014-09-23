@@ -49,12 +49,14 @@ void setup()
   sched = new SchedulerJob();  
 
   
+
   error(pool.getMaxJobCount() + "");
 
   Job itemp;
-  for(int i = 0;i < 4;i++){
+  for(int i = 0;i < 7;i++){
     itemp = new Job(0,0);
-    itemp.serviceTime.setValue(30);
+    itemp.serviceTime.setValue(10);
+    itemp.period.setValue(600);
     pool.push(itemp);
 
     // itemp.dispatchButton.setOn();
@@ -63,6 +65,10 @@ void setup()
   timeRunning = false;
   firstTime = true;
   currentJob = pool.jobs[0];
+
+  c2 = new TimeLIne();
+  c2.pre(); // use cc.post(); to draw on top of existing controllers.
+  //cp5.addCanvas(c2); // add the canvas to cp5
     
 }
 void wait(int mil)
@@ -104,6 +110,7 @@ void draw() {
     else {
       error("No Jobs to Run");
       //return;
+      background(color(24, 24, 24,0));
     }
    
   }
