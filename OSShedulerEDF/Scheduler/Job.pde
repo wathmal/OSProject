@@ -8,7 +8,7 @@ Public Varialbles
 -----------------
 int : posx, posy - stores the top, left position coodinate of the Job Controller GUI
 int : myid       - stores a Unique Process ID
-int : nextDeadLine - [REFINE THIS]
+int : nextReschedule - stores the time that the deadline needs to be rescheduled
 int : proccessedTime - The time that the job has been on processor
 int : arrivaltime - The time the Job was created and added to the queue
 boolean : state - True if the Job is running on processor now, false if not
@@ -37,21 +37,23 @@ class Job
   public int posy;
   public int myid;
   
-  public int nextDeadline; //for repeating jobs
+  public int deadline; 
+  public int nextReschedule;
   public int processedTime;
   public int arrivalTime;
   public int state;
-  public int absoluteDeadline;
   public float completionPercentage; // = processedTime/serviceTime * 100%
-  
+  public boolean fresh;
   
   Job(int x, int y)
   {
     posx = x;
     posy = y;
-    nextDeadline = -1;
+    deadline = 0;
     processedTime = 0;
     myid = getUniqueJobID();
+
+    fresh = true;
 
     this.timeLine = new TimelineQueue(posx, posy, TIMELINE_LENGTH, TIMELINE_CELL_WIDTH, JOB_WIDGET_HEIGHT);
     
@@ -70,10 +72,10 @@ class Job
                  
     this.serviceTime = cp5.addNumberbox(myid + "s")
                        .setPosition(period.getPosition().x + 5 + JOB_WIDTH , posy + 13)
-                       .setRange(0,MAX_SERVICE_TIME)
+                       .setRange(1,MAX_SERVICE_TIME)
                        .setSize(JOB_WIDTH,JOB_HEIGHT)
                        .setDirection(Controller.HORIZONTAL)
-                       .setValue(0)
+                       .setValue(1)
                        .setCaptionLabel("Service Time");
                        
     this.percentage = cp5.addKnob(myid + "c")
@@ -138,6 +140,19 @@ class Job
   {
     return (int)this.period.getValue();
   }
-
+  public void setReady()
+  {
+    deadline = globalTime + Math.round(period.getValue());
+    arrivalTime = globalTime;
+  }
+  public boolean incProcessedTime()
+  {
+    this.processedTime++;
+    this.percentage.setValue(processedTime/serviceTime.getValue() * 100);
+    if(processedTime == serviceTime.getValue())
+      return true;
+    
+    return false;
+  }
 }
 
