@@ -34,7 +34,7 @@ public class OSShedulerEDF implements Runnable {
     private Queue runningQueue;
     public CPU cpu1;
 
-   // public 
+    // public 
     public OSShedulerEDF() {
         runnableQueue = new Queue(); //add new items to this queue and upon user
         //request move to runningQueue
@@ -88,14 +88,22 @@ public class OSShedulerEDF implements Runnable {
         return runnableQueue.add(newJob);
     }
 
-    public void schedule() {
+    public void schedule() throws InterruptedException {
         for (Iterator iterator = runningQueue.iterator(); iterator.hasNext();) {
             Job next = (Job) iterator.next();
             if (runnableQueue.getQueueProcessUtilization() > 50) {
                 System.out.println("Full utilization");
             } else {
-                runnableToRunning();
+                Job temp = runningQueue.getEDFJob();
+                for (int i = 0; i < temp.serviceTime; i++) {
+                    temp.processedTime++;
+                    temp.updateCompletionPersentage();
+                    temp.updateAbsoluteDeadline();
+                    temp.updateNextDeadline();
+                }
 
+                runnableToRunning();
+                Thread.sleep(temp.serviceTime);
                 runningQueue.setQueueProcessUtilization();
             }
         }
@@ -104,8 +112,8 @@ public class OSShedulerEDF implements Runnable {
     @Override
     public void run() {
         while (true) {
-            schedule();
             try {
+                schedule();
                 Thread.sleep(500);
             } catch (InterruptedException ex) {
                 Logger.getLogger(OSShedulerEDF.class.getName()).log(Level.SEVERE, null, ex);
