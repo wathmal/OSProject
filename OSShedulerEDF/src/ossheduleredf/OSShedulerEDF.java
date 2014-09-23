@@ -101,9 +101,8 @@ public class OSShedulerEDF implements Runnable {
                     temp.updateAbsoluteDeadline();
                     temp.updateNextDeadline();
                 }
-
                 runnableToRunning();
-                Thread.sleep(temp.serviceTime);
+                //Thread.sleep(temp.serviceTime);
                 runningQueue.setQueueProcessUtilization();
             }
         }
