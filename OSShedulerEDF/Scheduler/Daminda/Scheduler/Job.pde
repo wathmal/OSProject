@@ -8,7 +8,7 @@ Public Varialbles
 -----------------
 int : posx, posy - stores the top, left position coodinate of the Job Controller GUI
 int : myid       - stores a Unique Process ID
-int : nextDeadLine - [REFINE THIS]
+int : nextReschedule - stores the time that the deadline needs to be rescheduled
 int : proccessedTime - The time that the job has been on processor
 int : arrivaltime - The time the Job was created and added to the queue
 boolean : state - True if the Job is running on processor now, false if not
@@ -31,27 +31,30 @@ class Job
   public controlP5.Textlabel jobIdLabel;
   public controlP5.Button dispatchButton;
   public controlP5.Button killButton;
+  public controlP5.Slider timeToDeadline;
   TimelineQueue timeLine;
 
   public int posx;
   public int posy;
   public int myid;
   
-  public int nextDeadline; //for repeating jobs
+  public int deadline; 
+  public int nextReschedule;
   public int processedTime;
   public int arrivalTime;
   public int state;
-  public int absoluteDeadline;
   public float completionPercentage; // = processedTime/serviceTime * 100%
-  
+  public boolean fresh;
   
   Job(int x, int y)
   {
     posx = x;
     posy = y;
-    nextDeadline = -1;
+    deadline = 0;
     processedTime = 0;
     myid = getUniqueJobID();
+
+    fresh = true;
 
     this.timeLine = new TimelineQueue(posx, posy, TIMELINE_LENGTH, TIMELINE_CELL_WIDTH, JOB_WIDGET_HEIGHT);
     
@@ -70,10 +73,10 @@ class Job
                  
     this.serviceTime = cp5.addNumberbox(myid + "s")
                        .setPosition(period.getPosition().x + 5 + JOB_WIDTH , posy + 13)
-                       .setRange(0,MAX_SERVICE_TIME)
+                       .setRange(2,MAX_SERVICE_TIME)
                        .setSize(JOB_WIDTH,JOB_HEIGHT)
                        .setDirection(Controller.HORIZONTAL)
-                       .setValue(0)
+                       .setValue(1)
                        .setCaptionLabel("Service Time");
                        
     this.percentage = cp5.addKnob(myid + "c")
@@ -94,6 +97,11 @@ class Job
                          .setPosition(dispatchButton.getPosition().x + JOB_HEIGHT + 2, posy + 13)
                          .setSize(JOB_HEIGHT, JOB_HEIGHT)
                          .setCaptionLabel("  x");
+    this.timeToDeadline = cp5.addSlider(myid + "t")
+                             .setPosition(posx + 40, killButton.getPosition().y + 20)
+                             .setSize(100,10)
+                             .setRange(0,150)
+                             .setCaptionLabel("Deadline");
   }
   
   public void move(int x, int y)
@@ -106,6 +114,7 @@ class Job
     this.dispatchButton.setPosition(serviceTime.getPosition().x + JOB_WIDTH + 2, posy + 13);
     this.killButton.setPosition(dispatchButton.getPosition().x + JOB_HEIGHT + 2, posy + 13);
     this.jobIdLabel.setPosition(posx, posy);
+    this.timeToDeadline.setPosition(posx + 45, killButton.getPosition().y + 38);
     timeLine.move(posx, posy);
   }
   
@@ -117,6 +126,7 @@ class Job
     this.dispatchButton.hide();
     this.killButton.hide();
     this.jobIdLabel.hide();
+    this.timeToDeadline.hide();
   }
   public void removeJob(){
     this.period.remove();
@@ -125,7 +135,7 @@ class Job
     this.dispatchButton.remove();
     this.killButton.remove();
     this.jobIdLabel.remove();
-    
+    this.timeToDeadline.remove();
   }
   
   public int getPeriod()
@@ -138,6 +148,28 @@ class Job
   {
     return (int)this.period.getValue();
   }
-
+  public void setReady()
+  {
+    deadline = globalTime + Math.round(period.getValue());
+    arrivalTime = globalTime;
+  }
+  public boolean incProcessedTime()
+  {
+    this.processedTime++;
+    this.percentage.setValue(processedTime/serviceTime.getValue() * 100);
+    if(processedTime == serviceTime.getValue())
+      return true;
+    
+    return false;
+  }
+  void visualizeDeadline()
+  {
+    if(deadline == 0)
+      return;
+    //error(deadline + " " + (deadline - globalTime) );
+    float val = 100 - ((deadline - globalTime)* 100)/deadline;
+    
+    timeToDeadline.setValue( val );
+  }
 }
 
