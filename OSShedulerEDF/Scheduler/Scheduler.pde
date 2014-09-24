@@ -22,7 +22,7 @@ class SchedulerJob {
 	}
 	public void schedule()
 	{
-		
+		error("Scheduler called....");
 		currentJob = mostUrgentJob();
 	}
 }

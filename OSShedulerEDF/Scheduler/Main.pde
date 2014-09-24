@@ -21,11 +21,19 @@ final color COLOR_TIMELINE_PREEMPT = color(255, 0, 0);
 
 final int JOBSTACK_SIZE = 200;
 
+
+
 ControlP5 cp5;
 JobPool pool;
 DashBoard dash;
 SchedulerJob sched;
+PFont f; 
+
+boolean eventInterruptsOff;
+
 int globalTime;
+int unscaledGlobalTime;
+int timescale;
 int Job_next_id;
 Job currentJob;
 boolean timeRunning;
@@ -38,7 +46,7 @@ synchronized int getUniqueJobID()
 void setup()
 {
   
-  size(1280,720); //720p for Nexus
+  size(1280,650); //720p for Nexus
 
   background(0);
   noStroke();
@@ -47,28 +55,25 @@ void setup()
   pool = new JobPool(10,100);
   dash = new DashBoard();
   sched = new SchedulerJob();  
-
+  f = createFont("Arial",16,true); // STEP 3 Create Font
   
-
   error(pool.getMaxJobCount() + "");
 
   Job itemp;
-  for(int i = 0;i < 7;i++){
+  for(int i = 0;i < 4;i++){
     itemp = new Job(0,0);
-    itemp.serviceTime.setValue(10);
-    itemp.period.setValue(600);
+    itemp.serviceTime.setValue(30);
     pool.push(itemp);
 
     // itemp.dispatchButton.setOn();
     // jobDispatch(itemp.myid);
   }
   timeRunning = false;
+  
+  timescale = 1;
+
   firstTime = true;
   currentJob = pool.jobs[0];
-
-  c2 = new TimeLIne();
-  c2.pre(); // use cc.post(); to draw on top of existing controllers.
-  //cp5.addCanvas(c2); // add the canvas to cp5
     
 }
 void wait(int mil)
@@ -81,44 +86,54 @@ int cnt = 0;
 
 void draw() {
   if(timeRunning) {
-    globalTime++;
+    unscaledGlobalTime++;
+    globalTime = unscaledGlobalTime/timescale;
     checkRescheduledJobs();
+    dash.setCPUUsage();
     if(currentJob != null) {
       currentJob.incProcessedTime();
 
       error(currentJob.myid + " : " + currentJob.processedTime + "/" + Math.round(currentJob.serviceTime.getValue()));
-      if(currentJob.processedTime == Math.round(currentJob.serviceTime.getValue()))
+      if(currentJob.serviceTime.getValue() - currentJob.processedTime < 0.1)
       {
-        currentJob.dispatchButton.setOff();
-        currentJob.state = 0;
-
-        currentJob.nextReschedule = Math.round(currentJob.period.getValue()) + currentJob.arrivalTime + 1;//update this for a-periodic check
-        error("Rescheduling....");
-
-        sched.schedule();
-      }
-      for(int i = 0;i < pool.top;i++) {
         
-        if( pool.jobs[i] == currentJob)
+        currentJob.state = 0;
+        currentJob.nextReschedule = Math.round(currentJob.period.getValue()) + currentJob.arrivalTime + 1;//update this for a-periodic check
+        currentJob.processedTime = 0; // reset processedTime
+
+        error(globalTime + " Rescheduled with next reschedule at " + currentJob.nextReschedule );
+        currentJob.dispatchButton.setOff(); // this will indirectly trigger the scheduler
+
+        //sched.schedule(); not needed anymore because scheduler is triggered by currentJob.dispatchButton.setOff() 
+      }
+      
+    }
+    else {
+      error( globalTime + " No Jobs to Run");
+      //return;
+    }
+    
+    for(int i = 0;i < pool.top;i++) {
+        
+        if(pool.jobs[i] == currentJob)
           pool.jobs[i].timeLine.push(1);
         else
           pool.jobs[i].timeLine.push(0);
         
+        pool.jobs[i].visualizeDeadline();
         pool.jobs[i].timeLine.render();
       }
-    }
-    else {
-      error("No Jobs to Run");
-      //return;
-      background(color(24, 24, 24,0));
-    }
-   
   }
 
+  //finally draw the timeline numbers
+  TimeScaler();
   
 }
 
 public void controlEvent(ControlEvent theEvent) {
+  
+  
+
   String nm = theEvent.getController().getName();
   
   if(nm == "START") {
@@ -142,8 +157,10 @@ public void controlEvent(ControlEvent theEvent) {
   if(nm == "addButton")
     pool.push(new Job(0,0));
   
-
+  
   //process events from buttons in the Job Objects
+  
+  
 
   Pattern p = Pattern.compile("(\\d+)([dk])");
   Matcher m;
@@ -151,8 +168,10 @@ public void controlEvent(ControlEvent theEvent) {
 
   if(m.find())
   {
-    if(m.group(2).matches("d"))
-      jobDispatch(Integer.parseInt(m.group(1)));
+    if(m.group(2).matches("d")) {
+      if(!eventInterruptsOff) // prevents recurring dispatch calls when period > service time
+        jobDispatch(Integer.parseInt(m.group(1)));
+    }
     if(m.group(2).matches("k"))
       jobKill(Integer.parseInt(m.group(1)));
   }
@@ -165,17 +184,25 @@ void jobKill(int jobId)
 void jobDispatch(int jobId) 
 {
   Job j = pool.getJob(jobId);
+  if(j.period.getValue() < j.serviceTime.getValue()) {
+    eventInterruptsOff = true;
+    j.period.setValue(j.serviceTime.getValue());
+    j.dispatchButton.setOff();
+    eventInterruptsOff = false;
+  }
   if(j.fresh) {
     j.setReady();
      error(jobId + " is ready. " + j.arrivalTime + " " + j.deadline) ;
      j.fresh = false;
   }
+  dash.setCPUUsage();
   sched.schedule();
 }
 
 void reset()
 {
   timeRunning = false;
+  unscaledGlobalTime = 0;
   globalTime = 0;
   currentJob = null;
   dash.start.setCaptionLabel("START");
@@ -198,7 +225,28 @@ void checkRescheduledJobs()
   for(int i = 0;i < pool.top;i++)
     if(pool.jobs[i] != null) // && pool.jobs[i].dispatchButton.isOn() is not checked, just in case the user temporarliy holds a repeating pool.jobs
     {
-      if(pool.jobs[i].nextReschedule == globalTime)
-        jobDispatch(pool.jobs[i].myid);
+      if(pool.jobs[i].nextReschedule == globalTime) {
+        pool.jobs[i].setReady();
+        pool.jobs[i].processedTime = 0; // reset processedTime
+        pool.jobs[i].dispatchButton.setOn(); // this will call the jobDipatch method 
+        //jobDispatch(pool.jobs[i].myid);
+        error(pool.jobs[i].myid + " was dispatched with deadline" + pool.jobs[i].deadline);
+      }
+
     } 
+}
+
+
+void TimeScaler(){
+  fill(0);
+  rect(0,pool.posy-10, width,10);
+  rect(0,pool.posy+pool.top*(JOB_WIDGET_HEIGHT+JOB_WIDGET_PADDING)-JOB_WIDGET_PADDING, width,10);
+  fill(50,50,50);     
+  for(int i = 0 ; i < 500 ; i++){
+    text(i,JOB_WIDGET_WIDTH+globalTime*3-30*i,100);
+    text(i,JOB_WIDGET_WIDTH+globalTime*3-30*i,pool.posy+pool.top*(JOB_WIDGET_HEIGHT+JOB_WIDGET_PADDING));
+  }
+  fill(0);
+  rect(0,pool.posy-10, JOB_WIDGET_WIDTH,10);
+  rect(0,pool.posy+pool.top*(JOB_WIDGET_HEIGHT+JOB_WIDGET_PADDING)-JOB_WIDGET_PADDING, JOB_WIDGET_WIDTH,10);
 }
